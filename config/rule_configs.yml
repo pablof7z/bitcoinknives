@@ -1,0 +1,10 @@
+formulas:
+  the same percentage * 10000 sats: x*10000
+  the same percentage * 50000 sats: x*50000
+  the same percentage * 100000 sats: x*100000
+  1,000,000 sats: 1000000
+  10,000,000 sats: 10000000
+exchanges:
+  - coinbase pro
+  - kraken
+  - cex

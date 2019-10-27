@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @rule.user_id %>
+</p>
+
+<p>
+  <strong>Change percentage:</strong>
+  <%= @rule.change_percentage %>
+</p>
+
+<p>
+  <strong>Change period:</strong>
+  <%= @rule.change_period %>
+</p>
+
+<p>
+  <strong>Formula:</strong>
+  <%= @rule.formula %>
+</p>
+
+<p>
+  <strong>Max sats per trade:</strong>
+  <%= @rule.max_sats_per_trade %>
+</p>
+
+<p>
+  <strong>Max sats per period:</strong>
+  <%= @rule.max_sats_per_period %>
+</p>
+
+<p>
+  <strong>Max period in secs:</strong>
+  <%= @rule.max_period_in_secs %>
+</p>
+
+<p>
+  <strong>Enabled:</strong>
+  <%= @rule.enabled %>
+</p>
+
+<p>
+  <strong>Exchange name:</strong>
+  <%= @rule.exchange_name %>
+</p>
+
+<p>
+  <strong>Exchange api details:</strong>
+  <%= @rule.exchange_api_details %>
+</p>
+
+<%= link_to 'Edit', edit_rule_path(@rule) %> |
+<%= link_to 'Back', rules_path %>

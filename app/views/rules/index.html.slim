@@ -1,0 +1,34 @@
+section.section
+  .container.narrow
+    .columns.is-vcentered.is-centered.is-multiline
+      - @rules.each do |rule|
+        .column.is-half
+          .card[class=rule.card_class data-controller='price-watcher' data-price-watcher-period=rule.change_period]
+            .card-content[style='height: 17rem; overflow: scroll;']
+              p.title[style='font-weight: normal;']
+                ' When bitcoin goes down by
+                b #{rule.change_percentage}% over #{rule.change_period}
+              p.subtitle
+                | buy
+                code #{rule.formula}
+                |  with #{rule.base_currency}
+              - if rule.trades.count > 0
+                p= "#{number_to_human(rule.total_traded * 1e8)} sats stacked"
+              - if rule.enabled? && !rule.tradable?
+                p
+                  | Stacked #{time_ago_in_words(rule.last_trade_time)} ago,
+                  |  won't stack again for #{time_ago_in_words(rule.next_trade_time)}
+            .card-footer
+              = link_to 'Edit', edit_rule_path(rule), class: 'button is-inverted is-primary is-fullwidth is-large card-footer-item'
+              - if !rule.configured?
+                = link_to 'Configure', edit_rule_path(rule), class: 'button is-inverted is-primary is-fullwidth is-large card-footer-item'
+              - elsif rule.trades.count > 0
+                = link_to pluralize(rule.trades.count, 'trade'), rule_trades_path(rule), class: 'button is-inverted is-primary is-fullwidth is-large card-footer-item'
+              .card-footer-item
+                p[class=rule.price_change_class]
+                  span[data-target='price-watcher.price']= "#{rule.price_change.round(2)}%"
+
+
+    .columns.is-centered
+      .column.is-half
+        = link_to 'Add new buy rule', new_rule_path, class: 'button is-primary is-large is-fullwidth'

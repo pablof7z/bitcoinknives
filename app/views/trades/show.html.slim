@@ -1,0 +1,15 @@
+section.hero.is-vcentered.is-centered.is-fullheight.is-primary.is-bold
+  .hero-body.has-text-centered
+    .container
+
+
+      h1.title[style="zoom: 4"] ☣️
+      h1.title Hoooray!
+
+      .content.is-large
+        p You just took #{number_to_human(@trade.amount * 1e8).downcase} sats from crappy weak hands!
+
+      <a href="https://twitter.com/intent/tweet?ref_src=twsrc%5Etfw" class="twitter-hashtag-button" data-size="large" data-text="I just took #{number_to_human(@trade.amount * 1e8).downcase} sats from your weak hands at a #{@trade.change_percentage.to_i.abs}% discount! #bitcoin" data-url="https://bitcoinknives.com/" data-show-count="false">Brag about it</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+      p[style='margin-top: 2rem;']
+        = link_to 'Back to the dashboard', rules_path, class: 'button is-large is-primary is-rounded', style: 'font-weight: bold;'

@@ -1,0 +1,21 @@
+section.section
+  .container.narrow
+    table.table.is-striped.is-hoverable.is-fullwidth
+      thead
+        th Date
+        th Change Percentage
+        th Amount
+        th Price
+        th Status
+
+      tbody
+        - @trades.each do |trade|
+          tr
+            td= trade.executed_at
+            td #{trade.change_percentage.round(2)}%
+            td= "#{number_to_human(trade.amount * 1e8)} sats"
+            td= number_to_currency(trade.price, symbol: trade.rule_base_currency)
+            td[class=trade.tx_status]= trade.tx_status
+          tr
+            td[colspan='5']
+              pre= trade.tx_info

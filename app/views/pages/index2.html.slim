@@ -1,0 +1,58 @@
+section.hero.is-fullheight-with-navbar
+  .hero-header[style='padding-top: 4rem;']
+    .level
+      .level-item
+        .columns.is-mobile
+          .column
+            h1.title.has-text-right 🔪
+          .column
+            h1.title.is-spaced[style='white-space: nowrap;'] Bitcoin Knives
+            p.subtitle Catch 'em all!
+
+
+  .hero-body
+    .container
+      .columns.is-centered
+        .column.is-10
+          h1.title[style='font-size: 3rem;'] Bitcoin Knives get's you bitcoin when it's on sale, automatically.
+
+      .columns.is-vcentered
+        #description.column.is-4.is-offset-2.has-text-right[style='padding-right: 2.5rem;']
+          img[src='file:/Users/pablo/Downloads/bitcoin2-icons/SVG/Asset 6.svg']
+          p.content.is-large
+            | Better than lump sums or DCAing, stack sats when the price has fallen by a certain
+            |  amount.
+        .column.is-half
+          .content.is-large.is-inline-block[style='padding: 4rem 3rem; background-color: #f5f5f5; border-radius: 1rem;']
+            span' When btc drops by more than
+            .field.is-inline
+              .control.is-inline
+                .select.is-dark
+                  select.is-inline
+                    - (1..25).each do |i|
+                      option &nbsp; #{i}%
+            p
+            span' pick up
+            .field.is-inline
+              .control.is-inline
+                .select.is-dark
+                  select.is-inline
+                    option &nbsp; the same percentage * 1000 sats
+                    option &nbsp; the same percentage * 5000 sats
+                    option &nbsp; the same percentage * 10000 sats
+                    option &nbsp; 10,000 sats
+                    option &nbsp; 100,000 sats
+
+            p
+            p
+              button.button.is-dark.is-large.is-fullwidth Stack those sats!
+
+  .hero-footer
+    .content.has-text-centered
+      h1.title
+        |
+
+
+
+section.hero.has-text-centered
+  .hero-body

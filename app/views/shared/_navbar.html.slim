@@ -1,0 +1,30 @@
+nav.navbar
+  .container
+    .navbar-brand
+      a.navbar-item[href=root_path]
+        b 🔪 Bitcoin Knives
+      span.navbar-burger.burger data-target="navbarMenuHeroA"
+        span
+        span
+        span
+    #navbarMenuHeroA.navbar-menu
+      .navbar-end
+        a.navbar-item.is-active[href=root_path]
+          | Home
+        a.navbar-item[href='/download']
+          | Download
+        a.navbar-item[href='https://github.com/heelhook/bitcoinknives/' target='_blank']
+          span.icon
+            i.fab.fa-github
+        a.navbar-item[href='https://twitter.com/pablof7z' target='_blank']
+          span.icon
+            i.fab.fa-twitter
+        span.navbar-item
+          - if current_user
+            a.button.is-primary[href=rules_path]
+              span Dashboard
+          - else
+            a.button.is-primary[href=new_user_registration_path]
+              span Sign up
+        - if current_user
+          = link_to 'Log out', destroy_user_session_path, method: :delete, class: 'navbar-item'

@@ -1,0 +1,58 @@
+section.hero.is-fullheight-with-navbar
+  .hero-header
+    .container
+      .is-centered[style='margin-top: 2.5rem;']
+        h1.title.has-text-centered[style='font-size: 3rem;'] Get bitcoins when they're on sale, automatically.
+
+        p.content.is-large.has-text-centered
+          | Better than lump sums or DCAing, stack sats when the price has fallen by a certain
+          |  amount.
+
+  .hero-body
+    .container
+      = form_for @rule, url: '/rules/new', method: :get do |f|
+        .columns.is-vcentered
+          .column.is-half.has-text-centered[style='padding-right: 2.5rem;']
+            = image_tag 'bitcoin_1.svg', style: 'width: 80%;'
+          .column.is-half
+            .content.is-large.is-inline-block.has-background-light[style='padding: 4rem 3rem; border-radius: 1rem;']
+              span> When btc drops by more than
+              .field.is-inline
+                .control.is-inline
+                  .select.is-dark
+                    = f.select :change_percentage, options_for_select((1..50).map{|i| ["#{i}%", i]}), class: '.is-inline'
+              p
+              span' pick up
+              .field.is-inline
+                .control.is-inline
+                  .select.is-dark
+                    = f.select :formula, @formulas, class: 'is-inline'
+              p
+              p
+                button.button.is-dark.is-large.is-fullwidth Stack those sats!
+
+section.hero.is-medium
+  .hero-body
+    .container
+      .columns
+        .column.is-half
+          .content.is-large
+            h1.title Works with your exchange
+            p We don't handle any of your bitcoin or your dirty fiat, just connect Bitcoin Knives with your exchange and forget.
+
+            p
+              button.button.is-dark.is-large.is-rounded[style='font-weight: bold; padding: 0 5rem;'] Get started
+        .column.is-5.is-offset-1.has-background-danger
+
+section.hero.is-medium
+  .hero-body
+    .container
+      .columns
+        .column.is-5.has-background-danger
+        .column.is-half.is-offset-1
+          .content.is-large
+            h1.title Works with your exchange
+            p We don't handle any of your bitcoin or your dirty fiat, just connect Bitcoin Knives with your exchange and forget.
+
+            p
+              button.button.is-dark.is-large.is-rounded[style='font-weight: bold; padding: 0 5rem;'] Get started

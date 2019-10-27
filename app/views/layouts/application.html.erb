@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bitcoin Knives</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Anonymous+Pro:400,700|PT+Sans:700&display=swap" rel="stylesheet">
+    <% if Rails.env.production? %>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-72842867-2');
+      </script>
+    <% end %>
+  </head>
+
+  <body class="<%= params[:controller].parameterize %>">
+    <%- unless @skip_navbar %>
+      <%= render partial: 'shared/navbar' %>
+    <%- end %>
+    <%= render partial: 'shared/flashes' %>
+    <%= yield %>
+  </body>
+</html>

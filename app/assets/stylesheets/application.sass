@@ -1,0 +1,66 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+$primary: #6c63ff
+
+@import 'bulma/bulma'
+
+body
+  font-family: 'PT Sans', sans-serif
+
+.container
+  max-width: 1170px
+
+.narrow
+  max-width: 900px
+
+h1.title
+  font-family: 'PT Sans', sans-serif
+  font-size: 3rem
+  font-weight: 700
+
+.navbar-item, .navbar-link
+  font-family: 'PT Sans', sans-serif
+  font-size: 1.25rem
+  line-height: 1.5rem
+  font-weight: 700
+  padding: 1rem 0.75rem
+
+.field_with_errors input.input
+  @extend .is-danger
+
+#error_explanation
+  @extend .notification
+  @extend .is-danger
+
+  ul
+    margin: 1rem
+    padding: 1rem
+    list-style: disc
+
+    li
+      padding: 0 1rem
+
+.hidden
+  display: none
+
+.notification.is-notice
+  @extend .notification.is-success
+
+.price-up
+  @extend .has-text-success
+
+.price-down
+  @extend .has-text-danger
