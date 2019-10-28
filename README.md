@@ -60,5 +60,8 @@ Wanna support the project? Just send a PR or send some sats to
 
 3EzCrenksjXGexpsAFcCc2pyRJaarTxLUw
 
+You can tweet at me at [@pablof7z][twitter]
+
 [issue]: https://github.com/heelhook/bitcoinknives/issues/new
 [localhost]: http://localhost:3000/
+[twitter]: https://twitter.com/pablof7z
