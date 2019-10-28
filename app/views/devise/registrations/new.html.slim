@@ -2,12 +2,14 @@ section.hero.is-fullheight.is-vcentered
   .hero-body
     .container.is-centered
       .columns
-        .column.is-3.is-offset-2.has-text-right[style='padding: 1.5rem;']
+        .column.is-4.is-offset-2.has-text-right[style='padding: 1.5rem;']
           .content.is-large
-            p Registration? What for?
+            p
+              b Why register?
 
-          .content
-            p Manage rules for trading
+            p Having a user is just a way for you to handle your sat-stacking rules.
+
+            p The email address is not validated beyond it's format, so feel free to use any address.
         .column.is-4
           .box
             = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|

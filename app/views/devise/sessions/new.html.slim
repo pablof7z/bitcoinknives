@@ -4,7 +4,6 @@ section.hero.is-fullheight.is-vcentered
       .level
         .level-item
           .box
-            h1.title Login
             = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
               .field
                 = f.label :email
