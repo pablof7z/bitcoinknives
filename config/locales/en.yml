@@ -31,3 +31,6 @@
 
 en:
   hello: "Hello world"
+  rule:
+    validations:
+      invalid_api_key: API key/secret combination is invalid

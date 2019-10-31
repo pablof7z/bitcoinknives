@@ -2,6 +2,10 @@ section.hero.is-fullheight.is-vcentered
   .hero-body
     .container.is-centered
       .columns
+        .column.is-8.is-offset-2
+          = render "devise/shared/error_messages", resource: resource
+
+      .columns.is-vcentered
         .column.is-4.is-offset-2.has-text-right[style='padding: 1.5rem;']
           .content.is-large
             p
@@ -9,11 +13,10 @@ section.hero.is-fullheight.is-vcentered
 
             p Having a user is just a way for you to handle your sat-stacking rules.
 
-            p The email address is not validated beyond it's format, so feel free to use any address.
+            p The email address is not validated beyond it's format, so you can use any address.
         .column.is-4
           .box
             = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
-              = render "devise/shared/error_messages", resource: resource
               .field
                 = f.label :email, class: 'label'
                 = f.email_field :email, autofocus: true, autocomplete: "email", class: 'input'

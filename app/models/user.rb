@@ -5,4 +5,9 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :rules
+  has_many :invoices
+
+  def has_paid_plan?
+    upgraded?
+  end
 end

@@ -13,38 +13,6 @@ module TradeExecuterExchange
     end
 
     def exec
-      resp = client.add_order(
-        pair: get_pair,
-        type: 'buy',
-        ordertype: 'market',
-        volume: trade.amount
-      )
-
-      if resp['error'].any?
-        raise resp['error'].join(',')
-      elsif !resp['result']
-        raise resp.inspect
-      else
-        @trade.update(
-          tx_info: resp['result']['descr'],
-          tx_id: resp['result']['txid'].join,
-          tx_status: 'success',
-        )
-
-        begin
-          orders = client.closed_orders
-          order = orders['result']['closed'][@trade.tx_id]
-
-          raise 'Order not found' if !order
-
-          @trade.update(price: order['price'])
-        rescue => e
-          @trade.update(
-            tx_status: 'failed',
-            tx_info: "#{@trade.tx_info}\nUnable to verify order status: #{e.message}"
-          )
-        end
-      end
     end
 
     private

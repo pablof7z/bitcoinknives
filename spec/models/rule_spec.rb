@@ -18,4 +18,30 @@ describe "Rule" do
       expect(trade_within_period.rule.tradable?).to be false
     end
   end
+
+  describe '.save' do
+    context 'when it has api key information' do
+      it 'validates that the api key is working' do
+        rule.exchange_name = 'kraken'
+        rule.exchange_api_key = 'something'
+        rule.exchange_api_secret = 'something'
+
+        expect{
+          rule.save!
+        }.to raise_error(ActiveRecord::RecordInvalid)
+      end
+    end
+
+    context "when it doesn't have api key information" do
+      it "doesn't validate the api key" do
+        rule.exchange_name = nil
+        rule.exchange_api_key = nil
+        rule.exchange_api_secret = nil
+
+        expect{
+          rule.save!
+        }.to_not raise_error
+      end
+    end
+  end
 end

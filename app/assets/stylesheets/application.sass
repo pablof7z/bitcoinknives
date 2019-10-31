@@ -19,6 +19,7 @@ $primary: #6c63ff
 
 body
   font-family: 'PT Sans', sans-serif
+  min-height: 100vh
 
 .container
   max-width: 1170px
@@ -30,6 +31,20 @@ h1.title
   font-family: 'PT Sans', sans-serif
   font-size: 3rem
   font-weight: 700
+
+h2.subtitle
+  font-size: 1.5rem
+  font-weight: 700
+
+.box-title
+  @extend .has-background-light
+  margin: -$box-padding
+  padding: $box-padding
+  margin-bottom: $box-padding
+  border-bottom: solid 1px rgba(10, 10, 10, 0.1)
+
+.navbar
+  background-color: transparent
 
 .navbar-item, .navbar-link
   font-family: 'PT Sans', sans-serif

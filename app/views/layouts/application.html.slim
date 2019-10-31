@@ -1,0 +1,81 @@
+doctype html
+html
+  head
+    meta content=("text/html; charset=UTF-8") http-equiv="Content-Type" /
+    title Bitcoin Knives
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
+    meta content="width=device-width, initial-scale=1" name="viewport" /
+    link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" rel="stylesheet" /
+    link href="https://fonts.googleapis.com/css?family=Anonymous+Pro:400,700|PT+Sans:700&display=swap" rel="stylesheet" /
+    - if Rails.env.production?
+      javascript:
+        | window.dataLayer = window.dataLayer || [];
+        | function gtag(){dataLayer.push(arguments);}
+        | gtag('js', new Date());
+        | gtag('config', 'UA-72842867-2');
+  body class=("#{params[:controller].parameterize} #{params[:action].parameterize}")
+    - unless @skip_navbar
+      = render partial: 'shared/navbar'
+    = render partial: 'shared/flashes'
+    = yield
+
+    #upgrade-modal.modal
+      .modal-background
+      .modal-content
+        .box
+          .container.narrow.has-background-white
+            .content.is-medium
+              h2.subtitle Why upgrade?
+
+              .columns
+                .column.is-1 ✅
+                .column
+                  p
+                    b Preferred trade execution
+                    br
+                    span
+                      | Trades are queued for execution. Paid subscribers get
+                      |  bumped up on the queue for priority execution.
+
+              .columns
+                .column.is-1 ✅
+                .column
+                  p
+                    b Stack even more sats
+                    br
+                    span
+                      | Blast through limits per trade and per month; stack
+                      |  sats faster than the rest.
+
+              .columns
+                .column.is-1 ✅
+                .column
+                  p
+                    b Preferred trade execution
+                    br
+                    span
+                      | Trades are queued for execution. Paid subscribers get
+                      |  bumped up on the queue for priority execution.
+
+
+              .columns
+                .column.is-1 ✅
+                .column
+                  p
+                    b Support circular-economy bitcoin projects!
+                    br
+                    span
+                      | Part of being a good bitcoin citizen is supporting
+                      |  the circular-economy. We hold onto our sats, we don't
+                      |  go convert them into fiat when we get them.
+
+              .has-text-centered
+                = link_to "Upgrade Now ⚡️ | 120k sats", new_payment_path, class: 'button is-primary is-large is-fullwidth'
+                span[style='font-size: 0.8rem;']
+                  | On-chain or via LN | 120k sats = 0.0012 btc = #{sats_to_dollars(120000)}
+
+
+      button.modal-close.is-large[aria-label='close']

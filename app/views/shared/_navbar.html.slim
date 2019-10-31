@@ -21,9 +21,17 @@ nav.navbar
             i.fab.fa-twitter
         span.navbar-item
           - if current_user
-            a.button.is-primary[href=rules_path]
-              span Dashboard
+            - if current_user.has_paid_plan?
+              a.button.is-primary[href=rules_path]
+                span Dashboard
+            - else
+              a.button[href=rules_path style='margin-right: 1rem;']
+                span Dashboard
+              a.button.is-primary[href='#' data-modal='upgrade-modal']
+                span Upgrade
           - else
+            a.button.is-primary.is-inverted[href=new_user_session_path style='margin-right: 1rem;']
+              span Sign in
             a.button.is-primary[href=new_user_registration_path]
               span Sign up
         - if current_user

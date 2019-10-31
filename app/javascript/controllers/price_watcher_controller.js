@@ -33,22 +33,4 @@ export default class extends Controller {
       }
     });
   }
-
-  // total(){
-  //   let duration = this.durationTarget.value;
-  //   let region = this.regionTarget.value;
-
-  //   $.ajax('/invoices/price', {
-  //     data: { invoice: { duration: duration, region: region } },
-  //     success: (data) => {
-  //       let btcusd_price = this.btcusd_priceTarget.value
-  //       let price_in_btc = (data.price / 100000000)
-
-  //       this.price_in_satsTarget.textContent = data.price + ' sats'
-  //       this.price_in_bitcoinTarget.textContent = price_in_btc + ' BTC'
-  //       this.price_in_usdTarget.textContent = (btcusd_price * price_in_btc).toFixed(2) + ' USD'
-  //       this.sats_per_hourTarget.textContent = data.price / this.durationTarget.value + ' sats per hour'
-  //     }
-  //   })
-  // }
 }

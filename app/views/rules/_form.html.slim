@@ -1,60 +1,125 @@
 = form_for @rule do |form|
   - if rule.errors.any?
-    #error_explanation
-      h2
-        = pluralize(rule.errors.count, "error")
-        | prohibited this rule from being saved:
-      ul
+    section.section
+      .container.narrow.is-centered
         - rule.errors.full_messages.each do |message|
-          li= message
-  .box
-    .content.is-large[style='line-height: 3rem;']
-      ' When bitcoin falls by
-      .control.is-inline
-        .select
-          = form.select :change_percentage, options_for_select((1..50).map{|i| ["#{i}%", i.to_f]}), class: 'input is-inline has-text-right'
-      ' % or more over
-      .control.is-inline
-        .select
-          = form.select :change_period, @periods
-      '  buy
-      .control.is-inline
-        .select
-          = form.select :formula, @formulas
-      '  using
-      .field.is-inline
-        = form.text_field :base_currency, class: 'input is-inline'
+          p.notification[class="is-danger"]
+            button.delete
+            = message
 
-  /   a[href='#'] Configure limits
+  section.hero.is-vcentered.is-light.is-primary.is-bold.is-medium
+    .hero-body
+      .container.narrow.has-text-centered
+        div
+          .content.is-large[style='line-height: 3rem; font-size: 2.5rem;']
+            ' When bitcoin falls by
+            .control.is-inline
+              .select
+                = form.select :change_percentage, options_for_select((1..50).map{|i| ["#{i}%", i.to_f]}), class: 'input is-inline has-text-right'
+            ' % or more over
+            .control.is-inline
+              .select
+                = form.select :change_period, @periods
+            '  buy
+            .control.is-inline
+              .select
+                = form.select :formula, @formulas+['invalid']
+            '  with
+            .field.is-inline
+              = form.text_field :base_currency, class: 'input is-inline', style: 'max-width: 5rem'
 
-  / #limits.box.hidden
-  /   .content.is-large[style='line-height: 3rem;']
-  /     ' Limit the trade to
-  /     = form.number_field :max_sats_per_trade, class: 'input is-inline'
-  /     '  sats per trade.
-
-  /   .content.is-large[style='line-height: 3rem;']
-  /     ' Don't buy more than
-  /     = form.number_field :max_sats_per_period, class: 'input is-inline'
-  /     '  sats per
-  /     .control.is-inline
-  /       .select
-  /         = form.select :max_period_in_secs, options_for_select([['day', 1.day], ['week', 1.week], ['month', 1.month]])
-
-  .box
-    .field
-      = form.label 'Exchange', class: 'label'
-      .control
-        .select
-          = form.select :exchange_name, @exchanges
-      .columns
+  section.section
+    .container.narrow
+      .columns[data-controller='rule-exchange']
         .column
-          .field
-            = form.label :exchange_api_key, class: 'label'
-            = form.text_field :exchange_api_key, class: 'input'
+          .box
+            .box-title
+              h2.subtitle Limits
+            .field.is-horizontal
+              .field-label
+                label.label Don't buy more than
+              .field-body
+                = form.text_field :exchange_api_key, class: 'input is-inline'
+                span &nbsp; sats
+        .column.is-4
+
+      .columns.is-vcentered[data-controller='rule-exchange']
         .column
-          .field
-            = form.label :exchange_api_secret, class: 'label'
-            = form.text_field :exchange_api_secret, class: 'input'
-  .actions
-    = form.submit class: 'button is-large is-primary '
+          .box
+            .box-title
+              h2.subtitle Exchange
+            .field
+              = form.label 'Exchange', class: 'label'
+              .control
+                .select
+                  = form.select :exchange_name, (@exchanges+['Not listed']), {include_blank: true}, { "data-target" => "rule-exchange.exchange", "data-action" => "change->rule-exchange#show_info" }
+            .columns
+              .column
+                .field
+                  = form.label :exchange_api_key, 'API Key', class: 'label'
+                  = form.text_field :exchange_api_key, class: 'input'
+              .column
+                .field
+                  = form.label :exchange_api_secret, 'API Secret', class: 'label'
+                  = form.text_field :exchange_api_secret, class: 'input'
+        .column.is-4
+          .content
+            .instructions
+              #not_listed.hidden
+                h2
+                  | Can't find your exchange?
+
+                p
+                  ' Send us a quick
+                  a[href='https://twitter.com/pablof7z' target='_blank'] DM
+                  '  or
+                  a[href='mailto:pfer@me.com'] email
+                  |  about it and we'll get it added as soon as possible.
+              #coinbase_pro[class=(@rule.exchange_name != 'coinbase pro' ? 'hidden' : '')]
+                p
+                  ' Create an API key at
+                  a[href='https://pro.coinbase.com/profile/api' target='_blank' style='font-size: 0.8rem;'] https://pro.coinbase.com/profile/api
+                p
+                  | Make sure you enable the permissions:
+
+                p
+                  b ✅ Trade
+                  br
+                  span[style='font-size: 0.8rem;']  In order to create orders.
+
+                p
+                  ' You can enable IP whitelist with:
+                  b 165.22.78.113
+              #kraken[class=(@rule.exchange_name != 'kraken' ? 'hidden' : '')]
+                p
+                  ' Create an API key at
+                  a[href='https://www.kraken.com/u/settings/api' target='_blank' style='font-size: 0.8rem;'] https://www.kraken.com/u/settings/api
+                p
+                  | Make sure you enable the permissions:
+
+                p
+                  b ✅ Query Open Orders & Trades
+                  br
+                  span[style='font-size: 0.8rem;']  In order to create orders.
+
+                p
+                  b ✅ Query Closed Orders & Trades
+                  br
+                  span[style='font-size: 0.8rem;']  In order to check when orders have executed.
+              #cex[class=(@rule.exchange_name != 'cex' ? 'hidden' : '')]
+                p
+                  ' Create an API key at
+                  a[href='https://cex.io/trade/profile#/api' target='_blank' style='font-size: 0.8rem;'] https://cex.io/trade/profile#/api
+                p
+                  | Make sure you enable the permissions:
+
+                p
+                  b ✅ Place orders
+                  br
+                  span[style='font-size: 0.8rem;']  In order to create orders.
+
+                p
+                  ' You can enable IP whitelist with:
+                  b 165.22.78.113
+      .actions
+        = form.submit class: 'button is-large is-primary '

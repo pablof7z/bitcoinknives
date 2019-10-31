@@ -9,11 +9,6 @@ class RulesController < ApplicationController
     @rules = current_user.rules.decorate
   end
 
-  # GET /rules/1
-  # GET /rules/1.json
-  def show
-  end
-
   # GET /rules/new
   def new
     @rule = if params[:rule]

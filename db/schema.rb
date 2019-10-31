@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_27_154728) do
+ActiveRecord::Schema.define(version: 2019_10_31_162226) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "bitcoin_price_changes", force: :cascade do |t|
     t.string "base_currency"
@@ -33,8 +36,20 @@ ActiveRecord::Schema.define(version: 2019_10_27_154728) do
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
+  create_table "invoices", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.decimal "amount"
+    t.string "currency", default: "BTC"
+    t.string "status"
+    t.string "btcpay_invoice_id"
+    t.string "slug"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_invoices_on_user_id"
+  end
+
   create_table "rules", force: :cascade do |t|
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.float "change_percentage"
     t.string "change_period", default: "24 hours"
     t.string "formula"
@@ -54,7 +69,7 @@ ActiveRecord::Schema.define(version: 2019_10_27_154728) do
   end
 
   create_table "trades", force: :cascade do |t|
-    t.integer "rule_id", null: false
+    t.bigint "rule_id", null: false
     t.decimal "change_percentage"
     t.decimal "amount"
     t.decimal "price"
@@ -75,10 +90,12 @@ ActiveRecord::Schema.define(version: 2019_10_27_154728) do
     t.datetime "remember_created_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "upgraded", default: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "invoices", "users"
   add_foreign_key "rules", "users"
   add_foreign_key "trades", "rules"
 end
