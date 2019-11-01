@@ -7,7 +7,7 @@ class Rule < ApplicationRecord
   validates :change_percentage, numericality: true
   validates :base_currency, presence: true
   validates :exchange_name, inclusion: { in: RuleConfigService.exchanges, message: 'is not valid' }
-  validates :change_percentage, inclusion: { in: RuleConfigService.formulas_human, message: 'is not valid' }
+  validates :formula, inclusion: { in: RuleConfigService.formulas_human, message: 'is not valid' }
   validate :exchange_api_key_details, if: -> { exchange_name? }
 
   scope :enabled, -> { where(enabled: true) }
