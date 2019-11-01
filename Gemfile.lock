@@ -87,6 +87,27 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (~> 1.5)
       xpath (~> 3.2)
+    celluloid (0.17.3)
+      celluloid-essentials
+      celluloid-extras
+      celluloid-fsm
+      celluloid-pool
+      celluloid-supervision
+      timers (>= 4.1.1)
+    celluloid-essentials (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-extras (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-fsm (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-io (0.17.3)
+      celluloid (>= 0.17.2)
+      nio4r (>= 1.1)
+      timers (>= 4.1.1)
+    celluloid-pool (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-supervision (0.20.6)
+      timers (>= 4.1.1)
     childprocess (3.0.0)
     coderay (1.1.2)
     concurrent-ruby (1.1.5)
@@ -109,6 +130,12 @@ GEM
       request_store (>= 1.0)
     ecdsa (1.2.0)
     erubi (1.9.0)
+    eye (0.9.4)
+      celluloid (~> 0.17.3)
+      celluloid-io (~> 0.17.0)
+      sigar (~> 0.7.3)
+      state_machines
+      thor
     factory_bot (5.1.1)
       activesupport (>= 4.2.0)
     factory_bot_rails (5.1.1)
@@ -121,6 +148,7 @@ GEM
       activerecord (>= 4.0.0)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
+    hitimes (1.2.6)
     http-accept (1.7.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
@@ -242,6 +270,7 @@ GEM
       rubyzip (>= 1.2.2)
     sentry-raven (2.12.2)
       faraday (>= 0.7.6, < 1.0)
+    sigar (0.7.3)
     slim (4.0.1)
       temple (>= 0.7.6, < 0.9)
       tilt (>= 2.0.6, < 2.1)
@@ -257,10 +286,13 @@ GEM
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
     sqlite3 (1.4.1)
+    state_machines (0.5.0)
     temple (0.8.2)
     thor (0.20.3)
     thread_safe (0.3.6)
     tilt (2.0.10)
+    timers (4.1.2)
+      hitimes
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
@@ -301,6 +333,7 @@ DEPENDENCIES
   capybara (>= 2.15)
   devise
   draper
+  eye
   factory_bot_rails
   friendly_id
   jbuilder (~> 2.7)

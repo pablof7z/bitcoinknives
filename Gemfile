@@ -66,3 +66,4 @@ gem 'pg'
 gem 'kraken_ruby_client', github: 'jonatack/kraken_ruby_client'
 gem 'bitpay-sdk', :require => 'bitpay_sdk'
 gem "sentry-raven"
+gem 'eye'
