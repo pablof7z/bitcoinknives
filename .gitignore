@@ -36,3 +36,5 @@ yarn-debug.log*
 */.DS_Store
 .DS_Store
 config/btcpay_certificate.pem
+spec/examples.txt
+
