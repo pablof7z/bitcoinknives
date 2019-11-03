@@ -1,13 +1,14 @@
-section.hero.is-fullheight-with-navbar
-  .hero-header
+section.hero.is-primary.is-bold.is-medium
+  .hero-body
     .container
-      .is-centered[style='margin-top: 2.5rem;']
-        h1.title.has-text-centered[style='font-size: 3rem;'] Get bitcoins when they're on sale, automatically.
+      .is-centered
+        h1.title.has-text-centered[style='font-size: 3rem;'] Stack sats when they're on sale, automatically.
 
         p.content.is-large.has-text-centered
           | Better than lump sums or DCAing, stack sats when the price has fallen by a certain
           |  amount.
 
+section.hero
   .hero-body
     .container
       = form_for @rule, url: '/rules/new', method: :get do |f|
@@ -15,12 +16,17 @@ section.hero.is-fullheight-with-navbar
           .column.is-half.has-text-centered[style='padding-right: 2.5rem;']
             = image_tag 'bitcoin_1.svg', style: 'width: 80%;'
           .column.is-half
-            .content.is-large.is-inline-block.has-background-light[style='padding: 4rem 3rem; border-radius: 1rem;']
-              span> When btc drops by more than
+            .content.is-large[style='padding: 4rem 3rem; border-radius: 1rem;']
+              span> When btc drops by
               .field.is-inline
                 .control.is-inline
                   .select.is-dark
                     = f.select :change_percentage, options_for_select((1..50).map{|i| ["#{i}%", i]}), class: '.is-inline'
+              span>  over
+              .field.is-inline
+                .control.is-inline
+                  .select.is-dark
+                    = f.select :change_period, @periods, class: '.is-inline'
               p
               span' pick up
               .field.is-inline
@@ -38,7 +44,7 @@ section.hero.is-medium
         .column.is-half
           .content.is-large
             h1.title Works with your exchange
-            p We don't handle any of your bitcoin or your dirty fiat, just connect Bitcoin Knives with your exchange and forget.
+            p We don't handle any of your bitcoin or your dirty fiat; just connect Bitcoin Knives with your exchange and forget.
 
             p
               button.button.is-dark.is-large.is-rounded[style='font-weight: bold; padding: 0 5rem;'] Get started
