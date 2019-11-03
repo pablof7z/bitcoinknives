@@ -27,6 +27,8 @@ document.addEventListener('turbolinks:load', () => {
         const target = el.dataset.modal
         const $target = document.getElementById(target)
 
+        mixpanel.track('open-modal: ' + target)
+
         $target.classList.toggle('is-active');
         rootEl.classList.add('is-clipped');
         e.preventDefault();
@@ -94,8 +96,10 @@ document.addEventListener('turbolinks:load', () => {
   });
 
   function closeModals() {
-    console.log('called')
+    let modal = document.querySelector('.modal.is-active').id
+
     rootEl.classList.remove('is-clipped');
+    mixpanel.track("close-modal " + modal)
     $modals.forEach(function ($el) {
       $el.classList.remove('is-active');
     });
