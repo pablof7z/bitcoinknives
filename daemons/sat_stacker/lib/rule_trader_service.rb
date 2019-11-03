@@ -24,7 +24,10 @@ class RuleTraderService
   end
 
   def calculate_trade_amount(trade)
-    amount = TradeAmountCalculatorService.calculate(trade, @bitcoin_prices[trade.rule_change_period])
+    amount = TradeAmountCalculatorService.calculate(
+      trade.rule_formula,
+      @bitcoin_prices[trade.rule_change_period].change_percentage
+    )
     trade.amount = amount
   end
 end

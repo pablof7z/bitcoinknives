@@ -3,7 +3,6 @@ class RuleDecorator < Draper::Decorator
 
   def card_class
     if !object.running?
-      'has-background-light'
     end
   end
 

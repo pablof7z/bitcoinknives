@@ -20,5 +20,9 @@ class RuleConfigService
       period_exp = YAML.load_file("#{Rails.root}/config/price_fetcher.yml")['periods'][period]
       eval(period_exp)
     end
+
+    def trade_limit_for(exchange, type:)
+      YAML.load_file("#{Rails.root}/config/rule_configs.yml")['trade_limits'][exchange][type].to_f
+    end
   end
 end

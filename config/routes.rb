@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :rules, except: :show do
+  resources :rules do
     resources :trades
   end
   devise_for :users

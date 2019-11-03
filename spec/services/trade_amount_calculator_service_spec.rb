@@ -6,14 +6,14 @@ describe "TradeAmountCalculatorService" do
 
   describe "calculate" do
     it 'converts relative formulas' do
-      trade.rule.formula = 'the same percentage * 10000 sats'
+      trade.rule.formula = 'the same percentage x 100,000 sats'
       expect(bpc.change_percentage).to eq(-50)
-      expect(TradeAmountCalculatorService.calculate(trade, bpc)).to eq(0.005)
+      expect(TradeAmountCalculatorService.calculate(trade.rule_formula, bpc.change_percentage)).to eq(0.05)
     end
 
     it 'handles absolute formulas' do
-      trade.rule.formula = '100,000 sats'
-      expect(TradeAmountCalculatorService.calculate(trade, bpc)).to eq(0.001)
+      trade.rule.formula = '100k sats (0.001 btc)'
+      expect(TradeAmountCalculatorService.calculate(trade.rule_formula, bpc.change_percentage)).to eq(0.001)
     end
   end
 end

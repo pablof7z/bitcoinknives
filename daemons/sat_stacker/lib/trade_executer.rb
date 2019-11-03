@@ -9,7 +9,7 @@ class TradeExecuter
 
   def execute!
     klass = case trade.rule_exchange_name
-    when 'kraken' then TradeExecuterExchange::KrakenExchange
+    when 'kraken' then Exchange::Kraken
     else
       raise NotImplemented, "Exchange #{trade.rule_exchange_name} not implemented yet."
     end
@@ -17,7 +17,7 @@ class TradeExecuter
     raise "Would have traded #{trade.amount}" if trade.amount > 0.01
 
     te = klass.new(trade)
-    te.exec
+    te.create_buy_market_order(pair: , amount: trade.amount)
   rescue => e
     @trade.update(
       tx_info: e.message,

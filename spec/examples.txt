@@ -1,0 +1,20 @@
+example_id                                                        | status | run_time        |
+----------------------------------------------------------------- | ------ | --------------- |
+./spec/models/bitcoin_price_change_spec.rb[1:1:1]                 | passed | 0.00213 seconds |
+./spec/models/bitcoin_price_change_spec.rb[1:1:2]                 | passed | 0.01213 seconds |
+./spec/models/rule_spec.rb[1:1:1]                                 | passed | 0.00608 seconds |
+./spec/models/rule_spec.rb[1:1:2]                                 | passed | 0.04974 seconds |
+./spec/models/rule_spec.rb[1:1:3]                                 | passed | 0.00814 seconds |
+./spec/models/rule_spec.rb[1:1:4:1]                               | passed | 0.00788 seconds |
+./spec/models/rule_spec.rb[1:2:1:1]                               | passed | 0.00365 seconds |
+./spec/models/rule_spec.rb[1:2:2:1]                               | passed | 0.00857 seconds |
+./spec/models/rule_spec.rb[1:2:2:2]                               | passed | 0.00512 seconds |
+./spec/service/sat_stacker/lib/rule_trader_service_spec.rb[1:1:1] | passed | 0.0004 seconds  |
+./spec/services/rule_config_service_spec.rb[1:1:1]                | passed | 0.00773 seconds |
+./spec/services/rule_config_service_spec.rb[1:2:1]                | passed | 0.0008 seconds  |
+./spec/services/rule_config_service_spec.rb[1:3:1]                | passed | 0.00065 seconds |
+./spec/services/rule_config_service_spec.rb[1:4:1]                | passed | 0.00076 seconds |
+./spec/services/rule_config_service_spec.rb[1:5:1]                | passed | 0.00334 seconds |
+./spec/services/rule_config_service_spec.rb[1:6:1]                | passed | 0.00165 seconds |
+./spec/services/trade_amount_calculator_service_spec.rb[1:1:1]    | passed | 0.03884 seconds |
+./spec/services/trade_amount_calculator_service_spec.rb[1:1:2]    | passed | 0.004 seconds   |

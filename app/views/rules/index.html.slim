@@ -12,12 +12,20 @@ section.section
                 | buy
                 code #{rule.formula}
                 |  with #{rule.base_currency}
+
+              - unless rule.configured?
+                .columns.is-mobile
+                  .column.is-2
+                    h1.title 😔
+                  .column
+                    p You still need to complete the configuration to get this one to run.
+
               - if rule.trades.count > 0
-                p= "#{number_to_human(rule.total_traded * 1e8)} sats stacked"
+                p= "🙌🏻 #{number_to_human(rule.total_traded * 1e8)} sats stacked"
               - if rule.enabled? && !rule.tradable?
                 p
                   | Stacked #{time_ago_in_words(rule.last_trade_time)} ago,
-                  |  won't stack again for #{time_ago_in_words(rule.next_trade_time)}
+                  |  waiting to stack again for #{time_ago_in_words(rule.next_trade_time)}
             .card-footer
               = link_to 'Edit', edit_rule_path(rule), class: 'button is-inverted is-primary is-fullwidth is-large card-footer-item'
               - if !rule.configured?

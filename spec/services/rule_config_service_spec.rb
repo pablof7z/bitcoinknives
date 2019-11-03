@@ -15,13 +15,13 @@ describe "RuleConfigService" do
 
   describe '.formulas' do
     it 'returns human format' do
-      expect(RuleConfigService.formulas).to include('the same percentage * 10000 sats')
+      expect(RuleConfigService.formulas).to include('the same percentage x 100,000 sats')
     end
   end
 
   describe ".formulas_human_to_machine" do
-    it "translates 'the same percentage * 10000 sats' to 'x*10000'" do
-      expect(RuleConfigService.formulas_human_to_machine('the same percentage * 10000 sats')).to eq('x*10000')
+    it "translates 'the same percentage x 100,000 sats' to 'x*100000'" do
+      expect(RuleConfigService.formulas_human_to_machine('the same percentage x 100,000 sats')).to eq('x*1e5')
     end
   end
 
@@ -33,6 +33,12 @@ describe "RuleConfigService" do
         RuleConfigService.period_in_seconds('1 month') >
         RuleConfigService.period_in_seconds('24 hours')
       ).to be true
+    end
+  end
+
+  describe '.trade_limit_for' do
+    it 'returns the trade limit for the exchange in sats' do
+      expect(RuleConfigService.trade_limit_for('kraken', type: 'min')).to eq(1e5)
     end
   end
 end

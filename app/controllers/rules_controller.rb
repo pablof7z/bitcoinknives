@@ -22,6 +22,10 @@ class RulesController < ApplicationController
   def edit
   end
 
+  def show
+    redirect_to edit_rule_path(@rule)
+  end
+
   # POST /rules
   # POST /rules.json
   def create
@@ -76,19 +80,23 @@ class RulesController < ApplicationController
   end
 
   def rule_params
-    params.require(:rule).permit(
-      :user_id,
+    permitted = [
       :change_percentage,
       :change_period,
       :formula,
       :base_currency,
-      :max_sats_per_trade,
-      :max_sats_per_period,
-      :max_period_in_secs,
       :enabled,
       :exchange_name,
       :exchange_api_key,
       :exchange_api_secret,
-    )
+    ]
+
+    if current_user.has_paid_plan?
+      permitted << :max_sats_per_trade
+      permitted << :max_sats_per_period
+      permitted << :max_period_in_secs
+    end
+
+    params.require(:rule).permit(permitted)
   end
 end

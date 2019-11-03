@@ -5,7 +5,7 @@ module Exchanges
   class Kraken < Exchanges::Base
     attr_reader :client
 
-    def initialize
+    def initialize(api_key: nil, api_secret: nil)
       super
       @client = ::Kraken::Client.new(
         api_key: @api_key,
@@ -14,7 +14,9 @@ module Exchanges
     end
 
     def valid_api_key?
-      false
+      resp = @client.closed_orders
+
+      return resp['error'].empty?
     end
 
     def get_pair(asset1: 'BTC', asset2:)
@@ -24,7 +26,7 @@ module Exchanges
     end
 
     def create_buy_market_order(pair:, amount:)
-      resp = client.add_order(
+      resp = @client.add_order(
         pair: pair,
         type: 'buy',
         ordertype: 'market',
@@ -43,7 +45,7 @@ module Exchanges
         ret_val['tx_status'] = 'success'
 
         begin
-          orders = client.closed_orders
+          orders = @client.closed_orders
           order = orders['result']['closed'][ret_val['tx_id']]
 
           raise 'Order not found' if !order

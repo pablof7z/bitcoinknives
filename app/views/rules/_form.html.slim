@@ -11,37 +11,63 @@
     .hero-body
       .container.narrow.has-text-centered
         div
-          .content.is-large[style='line-height: 3rem; font-size: 2.5rem;']
+          .content.is-large[style='line-height: 3rem;']
             ' When bitcoin falls by
             .control.is-inline
-              .select
+              .select.is-medium
                 = form.select :change_percentage, options_for_select((1..50).map{|i| ["#{i}%", i.to_f]}), class: 'input is-inline has-text-right'
-            ' % or more over
+            '  or more over
             .control.is-inline
-              .select
+              .select.is-medium
                 = form.select :change_period, @periods
+          .content.is-large[style='line-height: 3rem;']
             '  buy
             .control.is-inline
-              .select
-                = form.select :formula, @formulas+['invalid']
+              .select.is-medium
+                = form.select :formula, @formulas
             '  with
             .field.is-inline
-              = form.text_field :base_currency, class: 'input is-inline', style: 'max-width: 5rem'
+              = form.text_field :base_currency, class: 'input is-medium is-inline', style: 'max-width: 5rem'
 
   section.section
     .container.narrow
-      .columns[data-controller='rule-exchange']
+      .columns[data-controller='rule-limits']
         .column
-          .box
+          .box.content.is-medium
             .box-title
               h2.subtitle Limits
             .field.is-horizontal
               .field-label
                 label.label Don't buy more than
               .field-body
-                = form.text_field :exchange_api_key, class: 'input is-inline'
-                span &nbsp; sats
-        .column.is-4
+                .control.has-icons-left
+                  = form.text_field :max_sats_per_trade, class: 'input is-inline is-large', style: 'max-width: 12rem;', "data-action" => 'click->rule-limits#show_modal', readonly: true
+                  span.icon.is-small.is-left
+                    i.fas.fa-lock
+                span[style='margin-left: 0.5rem;'] sats per trade
+
+            .field.is-horizontal
+              .field-label
+                label.label Don't buy more than
+              .field-body
+                .control.has-icons-left
+                  = form.text_field :max_sats_per_period, class: 'input is-inline is-large', style: 'max-width: 12rem;', "data-action" => 'click->rule-limits#show_modal', readonly: true
+                  span.icon.is-small.is-left
+                    i.fas.fa-lock
+                span[style='margin-left: 0.5rem;'] sats per
+                .control.is-inline[style='margin-left: 0.5rem;']
+                  .select.is-large
+                    = form.select :max_sats_per_period_length, @periods, {}, "data-action" => 'change->rule-limits#show_modal'
+
+            .columns.is-vcentered[style='margin-top: 1.5rem;']
+              .column.is-3
+                = image_tag 'undraw_chore_list_iof3.svg'
+              .column
+                p.content.is-large
+                  | Want to stack more sats and get preferred execution?
+                p
+                  a.button.is-dark.is-large[href='#' data-modal='upgrade-modal']
+                    span ⚡️ Upgrade ⚡️
 
       .columns.is-vcentered[data-controller='rule-exchange']
         .column
@@ -75,21 +101,21 @@
                   '  or
                   a[href='mailto:pfer@me.com'] email
                   |  about it and we'll get it added as soon as possible.
-              #coinbase_pro[class=(@rule.exchange_name != 'coinbase pro' ? 'hidden' : '')]
-                p
-                  ' Create an API key at
-                  a[href='https://pro.coinbase.com/profile/api' target='_blank' style='font-size: 0.8rem;'] https://pro.coinbase.com/profile/api
-                p
-                  | Make sure you enable the permissions:
+              / #coinbase_pro[class=(@rule.exchange_name != 'coinbase pro' ? 'hidden' : '')]
+              /   p
+              /     ' Create an API key at
+              /     a[href='https://pro.coinbase.com/profile/api' target='_blank' style='font-size: 0.8rem;'] https://pro.coinbase.com/profile/api
+              /   p
+              /     | Make sure you enable the permissions:
 
-                p
-                  b ✅ Trade
-                  br
-                  span[style='font-size: 0.8rem;']  In order to create orders.
+              /   p
+              /     b ✅ Trade
+              /     br
+              /     span[style='font-size: 0.8rem;']  In order to create orders.
 
-                p
-                  ' You can enable IP whitelist with:
-                  b 165.22.78.113
+              /   p
+              /     ' You can enable IP whitelist with:
+              /     b 165.22.78.113
               #kraken[class=(@rule.exchange_name != 'kraken' ? 'hidden' : '')]
                 p
                   ' Create an API key at
@@ -106,20 +132,20 @@
                   b ✅ Query Closed Orders & Trades
                   br
                   span[style='font-size: 0.8rem;']  In order to check when orders have executed.
-              #cex[class=(@rule.exchange_name != 'cex' ? 'hidden' : '')]
-                p
-                  ' Create an API key at
-                  a[href='https://cex.io/trade/profile#/api' target='_blank' style='font-size: 0.8rem;'] https://cex.io/trade/profile#/api
-                p
-                  | Make sure you enable the permissions:
+              / #cex[class=(@rule.exchange_name != 'cex' ? 'hidden' : '')]
+              /   p
+              /     ' Create an API key at
+              /     a[href='https://cex.io/trade/profile#/api' target='_blank' style='font-size: 0.8rem;'] https://cex.io/trade/profile#/api
+              /   p
+              /     | Make sure you enable the permissions:
 
-                p
-                  b ✅ Place orders
-                  br
-                  span[style='font-size: 0.8rem;']  In order to create orders.
+              /   p
+              /     b ✅ Place orders
+              /     br
+              /     span[style='font-size: 0.8rem;']  In order to create orders.
 
-                p
-                  ' You can enable IP whitelist with:
-                  b 165.22.78.113
+              /   p
+              /     ' You can enable IP whitelist with:
+              /     b 165.22.78.113
       .actions
-        = form.submit class: 'button is-large is-primary '
+        = form.submit 'Save', class: 'button is-large is-primary is-fullwidth'

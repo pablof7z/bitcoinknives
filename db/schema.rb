@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_31_162226) do
+ActiveRecord::Schema.define(version: 2019_11_01_194631) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,8 +54,7 @@ ActiveRecord::Schema.define(version: 2019_10_31_162226) do
     t.string "change_period", default: "24 hours"
     t.string "formula"
     t.integer "max_sats_per_trade", default: 10000000
-    t.integer "max_sats_per_period", default: 100000000
-    t.integer "max_period_in_secs", default: 2629746
+    t.integer "max_sats_per_period", default: 1000000
     t.boolean "enabled", default: true
     t.string "exchange_name"
     t.string "exchange_api_key"
@@ -64,6 +63,7 @@ ActiveRecord::Schema.define(version: 2019_10_31_162226) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "slug"
     t.string "base_currency", default: "USD"
+    t.string "max_sats_per_period_length", default: "1 week"
     t.index ["slug"], name: "index_rules_on_slug", unique: true
     t.index ["user_id"], name: "index_rules_on_user_id"
   end
