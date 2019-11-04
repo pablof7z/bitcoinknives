@@ -1,9 +1,12 @@
+$:.unshift File.dirname(__FILE__)
+
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
 require 'support/factory_bot'
 ENV['RAILS_ENV'] ||= 'test'
 
 require File.expand_path('../config/environment', __dir__)
+$:.unshift "#{Rails.root}/daemons/sat_stacker/lib"
 
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?

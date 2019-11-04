@@ -4,6 +4,7 @@ $:.unshift "#{File.dirname(__FILE__)}/lib"
 require "rules_query"
 require "rule_trader_policy"
 require "rule_trader_service"
+require "#{Rails.root}/config/initializers/raven"
 
 loop do
   bitcoin_prices = BitcoinPriceChange.all.to_h {|bpc| [bpc.period, bpc]}
@@ -16,8 +17,10 @@ loop do
     end
   end
 
-  trader_service = RuleTraderService.new(rules_to_trade_queue, bitcoin_prices)
-  trader_service.trade!
+  if rules_to_trade_queue.any?
+    trader_service = RuleTraderService.new(rules_to_trade_queue, bitcoin_prices)
+    trader_service.trade!
+  end
 
   sleep(10)
 end

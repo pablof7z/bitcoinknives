@@ -17,7 +17,7 @@ module Exchanges
       raise NotImplementedError
     end
 
-    def create_buy_market_order
+    def create_buy_market_order(pair:, amount:)
       raise NotImplementedError
     end
   end

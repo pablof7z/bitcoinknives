@@ -19,45 +19,83 @@ module Exchanges
       return resp['error'].empty?
     end
 
-    def get_pair(asset1: 'BTC', asset2:)
-      asset1 = 'XBT' if asset1 == 'BTC'
+    def get_pair(assets)
+      assets.map! {|a| translate_asset(a) }
 
-      "#{asset1}#{asset2}"
+      assets.join
     end
 
     def create_buy_market_order(pair:, amount:)
+      res = TradeResult.new
+
       resp = @client.add_order(
-        pair: pair,
+        pair: get_pair(pair),
         type: 'buy',
         ordertype: 'market',
         volume: amount,
       )
 
-      ret_val = {}
+      # resp = {
+      #   'error' => [],
+      #   'result' => {
+      #     'descr' => 'fake response',
+      #     'txid' => ['OEUJJI-PF5P5-M3MSSU'],
+      #   }
+      # }
+
+      if !validate_kraken_response(resp)
+        Raven.capture_message("Kraken replied with an unknown format.", extra: {response: resp.inspect})
+        raise "Kraken replied with an unknown format: #{resp.inspect}"
+      end
 
       if resp['error'].any?
         raise resp['error'].join(',')
       elsif !resp['result']
         raise resp.inspect
       else
-        ret_val['tx_info'] = resp['result']['descr']
-        ret_val['tx_id'] = resp['result']['txid'].join
-        ret_val['tx_status'] = 'success'
+        res.message = resp['result']['descr']
+        res.order_id = resp['result']['txid'].join
+        res.status = TradeResult::STATUS::Success
 
         begin
           orders = @client.closed_orders
-          order = orders['result']['closed'][ret_val['tx_id']]
+          order = orders['result']['closed'][res.order_id]
 
           raise 'Order not found' if !order
 
-          ret_val['price'] = order['price']
+          res.price = order['price'].to_f
         rescue => e
-          ret_val['tx_status'] = 'failed'
-          ret_val['tx_info'] = "Unable to verify order status: #{e.message}"
+          res.status = TradeResult::STATUS::Failed
+          res.message = "Unable to verify order status: #{e.message}"
         end
       end
 
-      ret_val
+      res
+    rescue => e
+      res.message = e.message
+      res.status = TradeResult::STATUS::Failed
+      res
+    end
+
+    private
+
+    def validate_kraken_response(response)
+      response['error'].is_a?(Array) ||
+      (
+        response['result'].is_a?(Hash) &&
+        response['result']['descr'] &&
+        response['result']['txid'].is_a?(Array)
+      )
+
+    end
+
+    def translate_asset(asset)
+      case asset
+      when 'BTC' then 'XBT'
+      else
+        asset
+      end
     end
   end
+
 end

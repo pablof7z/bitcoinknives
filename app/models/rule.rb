@@ -2,7 +2,7 @@ class Rule < ApplicationRecord
   extend FriendlyId
   friendly_id :uuid, use: [:slugged, :finders]
   belongs_to :user
-  has_many :trades
+  has_many :trades, dependent: :destroy
 
   validates :change_percentage, numericality: true
   validates :base_currency, presence: true
@@ -11,6 +11,7 @@ class Rule < ApplicationRecord
   validate :exchange_api_key_details, if: -> { exchange_api_key? && exchange_api_secret? }
   validate :max_sats_per_trade_limit, if: -> { exchange_name? }
 
+  default_scope -> { order(created_at: :desc) }
   scope :enabled, -> { where(enabled: true) }
   scope :configured, -> { where.not(exchange_name: nil, exchange_api_key: nil, exchange_api_secret: nil) }
 
@@ -26,13 +27,10 @@ class Rule < ApplicationRecord
     enabled? && configured?
   end
 
-  def total_traded
-    trades.inject(0) { |mem, var| mem + var.amount }
-  end
-
   def tradable?
+    return false unless configured?
     trade_execution_time_limit = RuleConfigService.period_in_seconds(change_period).ago
-    trades.where('executed_at > ?', trade_execution_time_limit).empty?
+    trades.successful.where('executed_at > ?', trade_execution_time_limit).empty?
   end
 
   private
