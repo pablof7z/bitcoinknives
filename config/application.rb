@@ -17,9 +17,3 @@ module BitcoinknivesCom
     # the framework and any gems in your application.
   end
 end
-
-if Rails.env.production?
-  Raven.configure do |config|
-    config.dsn = 'https://5961ebea66ba4935ae1eb73c763a388b:f93e99a86faf487ca3d1b90c3403992d@sentry.io/1803835'
-  end
-end
