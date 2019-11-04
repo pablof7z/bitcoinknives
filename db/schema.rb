@@ -10,10 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_01_194631) do
-
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+ActiveRecord::Schema.define(version: 2019_11_04_163507) do
 
   create_table "bitcoin_price_changes", force: :cascade do |t|
     t.string "base_currency"
@@ -37,7 +34,7 @@ ActiveRecord::Schema.define(version: 2019_11_01_194631) do
   end
 
   create_table "invoices", force: :cascade do |t|
-    t.bigint "user_id", null: false
+    t.integer "user_id", null: false
     t.decimal "amount"
     t.string "currency", default: "BTC"
     t.string "status"
@@ -49,12 +46,12 @@ ActiveRecord::Schema.define(version: 2019_11_01_194631) do
   end
 
   create_table "rules", force: :cascade do |t|
-    t.bigint "user_id", null: false
+    t.integer "user_id", null: false
     t.float "change_percentage"
     t.string "change_period", default: "24 hours"
     t.string "formula"
-    t.integer "max_sats_per_trade", default: 10000000
-    t.integer "max_sats_per_period", default: 1000000
+    t.integer "max_sats_per_trade", default: 1000000
+    t.integer "max_sats_per_period", default: 2500000
     t.boolean "enabled", default: true
     t.string "exchange_name"
     t.string "exchange_api_key"
@@ -69,7 +66,7 @@ ActiveRecord::Schema.define(version: 2019_11_01_194631) do
   end
 
   create_table "trades", force: :cascade do |t|
-    t.bigint "rule_id", null: false
+    t.integer "rule_id", null: false
     t.decimal "change_percentage"
     t.decimal "amount"
     t.decimal "price"
