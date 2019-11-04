@@ -19,13 +19,21 @@ class RuleDecorator < Draper::Decorator
     bpc.change_percentage.round(3) if bpc && bpc.change_percentage
   end
 
+  def last_trade
+    object.trades.successful.order(created_at: :desc).first
+  end
+
   def last_trade_time
-    object.trades.order(created_at: :desc).first.created_at
+    last_trade.created_at
   end
 
   def next_trade_time
     trade_execution_time_limit = RuleConfigService.period_in_seconds(object.change_period)
     ltt = last_trade_time
     ltt + trade_execution_time_limit
+  end
+
+  def total_traded
+    trades.successful.inject(0) { |mem, var| mem + var.amount }
   end
 end

@@ -11,10 +11,18 @@ section.section
       tbody
         - @trades.each do |trade|
           tr
-            td= trade.executed_at
+            td
+              - if trade.executed_at > 1.week.ago
+                = "#{time_ago_in_words(trade.executed_at)} ago"
+              - else
+                = trade.executed_at
             td #{trade.change_percentage.round(2)}%
-            td= "#{number_to_human(trade.amount * 1e8)} sats"
-            td= number_to_currency(trade.price, symbol: trade.rule_base_currency)
+            td
+              = "#{number_to_human(trade.amount * 1e8).downcase} sats"
+              '
+              = "(#{trade.amount} btc)"
+
+            td= number_to_currency(trade.price, unit: 'USD')
             td[class=trade.tx_status]= trade.tx_status
           tr
             td[colspan='5']
