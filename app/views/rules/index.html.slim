@@ -15,7 +15,7 @@
     .container.narrow
       .columns.is-vcentered.is-centered.is-multiline
         - @rules.each do |rule|
-          .column.is-half
+          .column.is-three-quarters
             .card[class=rule.card_class data-controller='price-watcher' data-price-watcher-period=rule.change_period]
               .card-content[style='height: 17rem; overflow: scroll;']
                 p.title[style='font-weight: normal;']
@@ -27,11 +27,13 @@
                   |  with #{rule.base_currency}
 
                 - unless rule.configured?
-                  .columns.is-mobile
-                    .column.is-2
+                  .columns.is-mobile.is-vcentered
+                    .column.is-1
                       h1.title 😔
+                    .column.is-6[style='padding-left: 2rem;']
+                      p You still need to complete the configuration to get this bad boy to run.
                     .column
-                      p You still need to complete the configuration to get this one to run.
+                      a.button.is-primary[data-chat] Need help?
 
                 - if rule.trades.successful.count > 0
                   p= "🙌🏻 #{number_to_human(rule.total_traded * 1e8)} sats stacked"
@@ -47,7 +49,9 @@
                   = link_to pluralize(rule.trades.count, 'trade'), rule_trades_path(rule), class: 'button is-inverted is-primary is-fullwidth is-large card-footer-item'
                 .card-footer-item
                   p[class=rule.price_change_class]
-                    span[data-target='price-watcher.price']= "#{rule.price_change.round(2)}%"
+                    span[data-target='price-watcher.price']
+                      = "#{rule.price_change.round(2)}%"
+                    span'  over #{rule.change_period}
 
 
       .columns.is-centered

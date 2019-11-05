@@ -1,4 +1,4 @@
-require "trade_executer"
+require_relative "trade_executer"
 
 class RuleTraderService
   attr_reader :rules
@@ -9,8 +9,9 @@ class RuleTraderService
   end
 
   def trade!
-    threads = rules.map {|r| Thread.new { trade_rule(r) }}
-    threads.join
+    grouped_rules = rules.group_by {|r| r.user.has_paid_plan? }
+    grouped_rules[true].each {|r| trade_rule(r) } if grouped_rules[true]
+    grouped_rules[false].each {|r| trade_rule(r) } if grouped_rules[false]
   end
 
   def trade_rule(rule)
@@ -21,6 +22,9 @@ class RuleTraderService
 
     te = TradeExecuter.new(trade)
     te.execute!
+  rescue => e
+    Raven.capture_message("Failed trade execution: #{rule.id}", extra: {error: e.message, backtrace: e.backtrace})
+    raise
   end
 
   def calculate_trade_amount(trade)
@@ -29,5 +33,10 @@ class RuleTraderService
       @bitcoin_prices[trade.rule_change_period].change_percentage
     )
     trade.amount = amount
+  rescue => e
+    trade.update(
+      message: e.message,
+      tx_status: TradeResult::STATUS::Failed,
+    )
   end
 end
