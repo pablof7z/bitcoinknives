@@ -16,6 +16,7 @@ html
         | function gtag(){dataLayer.push(arguments);}
         | gtag('js', new Date());
         | gtag('config', 'UA-72842867-2');
+    = render partial: 'shared/drift'
   body class=("#{params[:controller].parameterize} #{params[:action].parameterize}")
     - unless @skip_navbar
       = render partial: 'shared/navbar'
@@ -25,3 +26,4 @@ html
     = render partial: 'shared/upgrade_modal'
     = render partial: 'shared/hotjar'
     = render partial: 'shared/mixpanel'
+    #drift-widget-container[data-turbolinks-permanent]
