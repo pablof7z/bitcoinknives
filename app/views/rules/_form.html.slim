@@ -40,24 +40,35 @@
               .field-label
                 label.label Don't buy more than
               .field-body
-                .control.has-icons-left
-                  = form.text_field :max_sats_per_trade, class: 'input is-inline is-large', style: 'max-width: 12rem;', "data-action" => 'click->rule-limits#show_modal', readonly: true
-                  span.icon.is-small.is-left
-                    i.fas.fa-lock
+                - if current_user.has_paid_plan?
+                  .control
+                    = form.text_field :max_sats_per_trade, class: 'input is-inline is-large', style: 'max-width: 12rem;'
+                - else
+                  .control.has-icons-left
+                    = form.text_field :max_sats_per_trade, class: 'input is-inline is-large', style: 'max-width: 12rem;', "data-action" => 'click->rule-limits#show_modal', readonly: true
+                    span.icon.is-small.is-left
+                      i.fas.fa-lock
                 span[style='margin-left: 0.5rem;'] sats per trade
 
             .field.is-horizontal
               .field-label
                 label.label Don't buy more than
               .field-body
-                .control.has-icons-left
-                  = form.text_field :max_sats_per_period, class: 'input is-inline is-large', style: 'max-width: 12rem;', "data-action" => 'click->rule-limits#show_modal', readonly: true
-                  span.icon.is-small.is-left
-                    i.fas.fa-lock
+                - if current_user.has_paid_plan?
+                  .control
+                    = form.text_field :max_sats_per_period, class: 'input is-inline is-large', style: 'max-width: 12rem;'
+                - else
+                  .control.has-icons-left
+                    = form.text_field :max_sats_per_period, class: 'input is-inline is-large', style: 'max-width: 12rem;', "data-action" => 'click->rule-limits#show_modal', readonly: true
+                    span.icon.is-small.is-left
+                      i.fas.fa-lock
                 span[style='margin-left: 0.5rem;'] sats per
                 .control.is-inline[style='margin-left: 0.5rem;']
                   .select.is-large
-                    = form.select :max_sats_per_period_length, @periods, {}, "data-action" => 'change->rule-limits#show_modal'
+                    - if current_user.has_paid_plan?
+                      = form.select :max_sats_per_period_length, @periods, {}
+                    - else
+                      = form.select :max_sats_per_period_length, @periods, {}, "data-action" => 'change->rule-limits#show_modal'
 
             .columns.is-vcentered[style='margin-top: 1.5rem;']
               .column.is-3
@@ -99,7 +110,7 @@
                   ' Send us a quick
                   a[href='https://twitter.com/pablof7z' target='_blank'] DM
                   '  or
-                  a[href='mailto:pfer@me.com'] email
+                  a[data-chat] message
                   |  about it and we'll get it added as soon as possible.
               / #coinbase_pro[class=(@rule.exchange_name != 'coinbase pro' ? 'hidden' : '')]
               /   p
