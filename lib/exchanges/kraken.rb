@@ -35,14 +35,6 @@ module Exchanges
         volume: amount,
       )
 
-      # resp = {
-      #   'error' => [],
-      #   'result' => {
-      #     'descr' => 'fake response',
-      #     'txid' => ['OEUJJI-PF5P5-M3MSSU'],
-      #   }
-      # }
-
       if !validate_kraken_response(resp)
         Raven.capture_message("Kraken replied with an unknown format.", extra: {response: resp.inspect})
         raise "Kraken replied with an unknown format: #{resp.inspect}"
