@@ -1,4 +1,11 @@
 GIT
+  remote: https://github.com/bitpay/ruby-client.git
+  revision: 4fd7956664f41e60c7ab5f5e3182aa923cdb7636
+  specs:
+    bitpay-client (2.5.1905)
+      bitpay-key-utils (>= 2.2)
+
+GIT
   remote: https://github.com/jonatack/kraken_ruby_client.git
   revision: 0f9990cbd4d093caf057d0eeb43ff3a60b98a1a9
   specs:
@@ -73,8 +80,6 @@ GEM
     bindex (0.8.1)
     bitpay-key-utils (2.2.1905)
       ecdsa (~> 1.2)
-    bitpay-sdk (2.5.1905)
-      bitpay-key-utils (>= 2.2)
     bootsnap (1.4.5)
       msgpack (~> 1.0)
     builder (3.2.3)
@@ -327,7 +332,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bitpay-sdk
+  bitpay-client!
   bootsnap (>= 1.4.2)
   byebug
   capybara (>= 2.15)

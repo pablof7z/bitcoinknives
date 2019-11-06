@@ -1,5 +1,7 @@
+require 'bitpay_sdk'
+
 class BtcPayService
-  def self.create_invoice(order_id: nil, price_in_btc:, redirect_url:)
+  def self.create_invoice(order_id: nil, price_in_btc:, redirect_url:nil)
     client.create_invoice(
       price: price_in_btc,
       currency: 'BTC',
@@ -22,7 +24,8 @@ class BtcPayService
 
     @client = BitPay::SDK::Client.new(
       api_uri: BTCPAY_URL,
-      pem: BTCPAY_CERTIFICATE
+      pem: BTCPAY_CERTIFICATE,
+      tokens: {'merchant' => BTCPAY_MERCHANT_TOKEN}
     )
   end
 end
