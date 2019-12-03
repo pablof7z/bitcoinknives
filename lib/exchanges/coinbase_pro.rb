@@ -28,42 +28,6 @@ module Exchanges
     end
 
     def create_buy_market_order(pair:, amount:)
-      resp = @client.buy(
-        amount,
-        type: 'market',
-        product_id: get_pair(pair)
-      )
-
-      order = @client.order(resp['id'])
-
-      translate_order_to_result(order)
-
-        raise resp['error'].join(',')
-      elsif !resp['result']
-        raise resp.inspect
-      else
-        res.message = resp['result']['descr']
-        res.order_id = resp['result']['txid'].join
-        res.status = TradeResult::STATUS::Success
-
-        begin
-          orders = @client.closed_orders
-          order = orders['result']['closed'][res.order_id]
-
-          raise 'Order not found' if !order
-
-          res.price = order['price'].to_f
-        rescue => e
-          res.status = TradeResult::STATUS::Failed
-          res.message = "Unable to verify order status: #{e.message}"
-        end
-      end
-
-      res
-    rescue => e
-      res.message = e.message
-      res.status = TradeResult::STATUS::Failed
-      res
     end
 
     private
