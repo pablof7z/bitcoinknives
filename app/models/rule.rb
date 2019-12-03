@@ -10,7 +10,7 @@ class Rule < ApplicationRecord
   validates :formula, inclusion: { in: RuleConfigService.formulas_human, message: 'is not valid' }
   validate :exchange_api_key_details, if: -> { exchange_api_key? && exchange_api_secret? }
   validate :max_sats_per_trade_limit, if: -> { exchange_name? }
-  validates :max_sats_per_trade_limit, numericality: true, if: -> { exchange_name? }
+  validates :max_sats_per_trade, numericality: true, if: -> { exchange_name? }
 
   default_scope -> { order(created_at: :desc) }
   scope :enabled, -> { where(enabled: true) }
