@@ -8,7 +8,7 @@ class BtcPayService
       facade: 'merchant',
       params: {
         orderId: order_id,
-        notificationEmail: BTCPAY_NOTIFICATION_EMAIL,
+        notificationEmail: Rails.application.credentials.config.btcpay[:notification_email],
         redirectURL: redirect_url
       })
   end
@@ -23,9 +23,9 @@ class BtcPayService
     return @client if @client
 
     @client = BitPay::SDK::Client.new(
-      api_uri: BTCPAY_URL,
-      pem: BTCPAY_CERTIFICATE,
-      tokens: {'merchant' => BTCPAY_MERCHANT_TOKEN}
+      api_uri: Rails.application.credentials.config.btcpay[:url],
+      pem: Rails.application.credentials.config.btcpay[:cert],
+      tokens: {'merchant' => Rails.application.credentials.config.btcpay[:merchant_token]}
     )
   end
 end
