@@ -6,8 +6,9 @@
         .content.is-medium
           h2.subtitle Why upgrade?
 
-          .columns
-            .column.is-1 ✅
+          .columns.is-vcentered.is-mobile
+            .column.is-3.has-text-centered
+              <i class='uim uim-chart' style="--uim-color: #6563ff; zoom: 4;"></i>
             .column
               p
                 b Preferred trade execution
@@ -16,8 +17,22 @@
                   | Trades are queued for execution. Paid subscribers get
                   |  bumped up on the queue for priority execution.
 
-          .columns
-            .column.is-1 ✅
+          .columns.is-vcentered.is-mobile
+            .column.is-3.has-text-centered
+              <i class='uim uim-layers-alt' style="--uim-color: #6563ff; zoom: 4;"></i>
+            .column
+              p
+                b Mayer Multiple-aware
+                br
+                span
+                  | Trades can be conditional on where the current bitcoin
+                    price is with respect to the Mayer multiple, in order to
+                    be more protected of swings when the price has deviated
+                    from it's historical deviation.
+
+          .columns.is-vcentered.is-mobile
+            .column.is-3.has-text-centered
+              <i class='uim uim-line-spacing' style="--uim-color: #6563ff; zoom: 4;"></i>
             .column
               p
                 b Stack even more sats
@@ -26,8 +41,9 @@
                   | Blast through limits per trade and per month; stack
                   |  sats faster than the rest.
 
-          .columns
-            .column.is-1 ✅
+          .columns.is-vcentered.is-mobile
+            .column.is-3.has-text-centered
+              <i class='uim uim-process' style="--uim-color: #6563ff; zoom: 4;"></i>
             .column
               p
                 b Support circular-economy bitcoin projects!
@@ -38,9 +54,15 @@
                   |  go convert them into fiat when we get them.
 
           .has-text-centered
-            = link_to "⚡️ Upgrade Now ⚡️ | 120k sats", new_payment_path, class: 'button is-primary is-large is-fullwidth'
+            h1.title
+              | 200k sats
+              br
+            h2.subtitle.is-3[style='font-weight: 300;']  per year
+
+          .has-text-centered
+            = link_to "⚡️ Upgrade Now ⚡️", new_payment_path, class: 'button is-primary is-large is-fullwidth'
             span[style='font-size: 0.8rem;']
-              | On-chain or via LN | 120k sats = 0.0012 btc = #{sats_to_dollars(120000)}
+              | On-chain or via LN | 200k sats = 0.002 btc = #{sats_to_dollars(200000)}
 
 
   button.modal-close.is-large[aria-label='close']

@@ -1,46 +1,43 @@
-require 'kraken_ruby_client'
+require 'coinbase/exchange'
 require 'exchanges/base'
 
 module Exchanges
-  class Kraken < Exchanges::Base
+  class CoinbasePro < Exchanges::Base
     attr_reader :client
 
     def initialize(api={})
       super
-      @client = ::Kraken::Client.new(
-        api_key: @api[:key],
-        api_secret: @api[:secret],
+      @client = Coinbase::Exchange::Client.new(
+        @api[:key],
+        @api[:secret],
+        @api[:passphrase],
       )
     end
 
     def valid_api_key?
-      resp = @client.closed_orders
-
-      return resp['error'].empty?
+      resp = @client.accounts
+      true
+    rescue => e
+      return false
     end
 
     def get_pair(assets)
       assets.map! {|a| translate_asset(a) }
 
-      assets.join
+      assets.join('-')
     end
 
     def create_buy_market_order(pair:, amount:)
-      res = TradeResult.new
-
-      resp = @client.add_order(
-        pair: get_pair(pair),
-        type: 'buy',
-        ordertype: 'market',
-        volume: amount,
+      resp = @client.buy(
+        amount,
+        type: 'market',
+        product_id: get_pair(pair)
       )
 
-      if !validate_kraken_response(resp)
-        Raven.capture_message("Kraken replied with an unknown format.", extra: {response: resp.inspect})
-        raise "Kraken replied with an unknown format: #{resp.inspect}"
-      end
+      order = @client.order(resp['id'])
 
-      if resp['error'].any?
+      translate_order_to_result(order)
+
         raise resp['error'].join(',')
       elsif !resp['result']
         raise resp.inspect
@@ -71,22 +68,25 @@ module Exchanges
 
     private
 
-    def validate_kraken_response(response)
-      response['error'].is_a?(Array) ||
-      (
-        response['result'].is_a?(Hash) &&
-        response['result']['descr'] &&
-        response['result']['txid'].is_a?(Array)
-      )
+    def translate_order_to_result(order)
+      res = TradeResult.new
 
+      res.order_id = order['id']
+      res.message = order['done_reason']
+      res.price = order['executed_value'].to_f / order['size'].to_f
+
+      res.status = case order['status']
+      when 'done' then TradeResult::STATUS::Success
+      else
+        Raven.capture_message("Unhandled cbpro status: #{order['status']}", extra: {order: order})
+        TradeResult::STATUS::Failed
+      end
+
+      res
     end
 
     def translate_asset(asset)
-      case asset
-      when 'BTC' then 'XBT'
-      else
-        asset
-      end
+      asset
     end
   end
 

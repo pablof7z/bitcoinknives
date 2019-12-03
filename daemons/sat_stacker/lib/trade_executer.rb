@@ -1,4 +1,4 @@
-require "exchanges/kraken"
+require "exchanges"
 
 class TradeExecuter
   attr_reader :trade
@@ -10,6 +10,7 @@ class TradeExecuter
   def execute!
     klass = case trade.exchange_name
     when 'kraken' then Exchanges::Kraken
+    when 'coinbase pro' then Exchanges::CoinbasePro
     else
       raise NotImplemented, "Exchange #{trade.exchange_name} not implemented yet."
     end
@@ -17,9 +18,14 @@ class TradeExecuter
     raise "Would have traded #{trade.amount}" if trade.amount > 0.01
 
     te = klass.new(
-      api_key: trade.exchange_api_key,
-      api_secret: trade.exchange_api_secret,
+      api: {
+        key: trade.exchange_api_key,
+        secret: trade.exchange_api_secret,
+        passphrase: trade.exchange_api_passphrase,
+      }
     )
+
+    # Bitcoin maximalism ☣️
     resp = te.create_buy_market_order(pair: ['BTC', trade.base_currency], amount: trade.amount)
 
     @trade.update(

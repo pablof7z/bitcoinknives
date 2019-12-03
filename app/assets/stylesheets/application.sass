@@ -37,11 +37,14 @@ h2.subtitle
   font-weight: 700
 
 .box-title
-  @extend .has-background-light
+  // @extend .has-background-light
   margin: -$box-padding
   padding: $box-padding
   margin-bottom: $box-padding
   border-bottom: solid 1px rgba(10, 10, 10, 0.1)
+
+  h2.subtitle
+    margin-bottom: 0
 
 .navbar
   background-color: transparent
@@ -67,6 +70,9 @@ h2.subtitle
 
     li
       padding: 0 1rem
+
+.field_with_errors
+  display: inline
 
 .hidden
   display: none

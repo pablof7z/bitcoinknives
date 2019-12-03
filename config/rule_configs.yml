@@ -7,9 +7,11 @@ formulas:
   0.1 btc: 1e7
   1 btc: 1e8
 exchanges:
-  # - coinbase pro
+  - coinbase pro
   - kraken
   # - cex
 trade_limits:
   kraken:
+    min: 1e5
+  coinbase pro:
     min: 1e5

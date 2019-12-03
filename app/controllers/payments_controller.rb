@@ -2,7 +2,7 @@ class PaymentsController < ApplicationController
   def new
     @invoice = Invoice.create!(
       user: current_user,
-      amount: 0.0012,
+      amount: 0.000012,
       currency: 'BTC',
     )
 

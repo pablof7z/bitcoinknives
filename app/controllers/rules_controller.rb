@@ -2,6 +2,7 @@ class RulesController < ApplicationController
   before_action :set_rule, only: [:show, :edit, :update, :destroy]
   before_action :load_rule_configs, only: [:new, :edit, :create, :update]
   before_action :authenticate_user!
+  before_action :load_last_mm_tweet, only: [:new, :edit, :create, :update]
 
   # GET /rules
   # GET /rules.json
@@ -15,11 +16,12 @@ class RulesController < ApplicationController
       Rule.new(rule_params)
     else
       Rule.new
-    end
+    end.decorate
   end
 
   # GET /rules/1/edit
   def edit
+    @rule = @rule.decorate
   end
 
   def show
@@ -77,6 +79,10 @@ class RulesController < ApplicationController
     @formulas = RuleConfigService.formulas_human
     @exchanges = RuleConfigService.exchanges
     @periods = RuleConfigService.periods
+  end
+
+  def load_last_mm_tweet
+    @last_mm_tweet_id = LastMmTweetIdService.fetch
   end
 
   def rule_params

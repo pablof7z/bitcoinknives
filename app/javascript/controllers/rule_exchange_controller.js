@@ -17,4 +17,23 @@ export default class extends Controller {
 
     document.getElementById(sel).classList.remove('hidden')
   }
+
+  display_correct_fields() {
+    let exchange = this.exchangeTarget.value.toLowerCase();
+    exchange = exchange.replace(' ', '_');
+
+    (document.querySelectorAll('#fields > *, #instructions > *') || []).forEach(($el) => {
+      if (!$el.classList.contains(exchange)) { $el.classList.add('hidden') };
+    });
+
+    if (exchange != '') {
+      (document.querySelectorAll('#fields > .'+exchange+', #instructions > .'+exchange) || []).forEach(($el) => {
+        if ($el.classList.contains(exchange)) { $el.classList.remove('hidden') };
+      });
+    }
+  }
+
+  connect() {
+    this.display_correct_fields()
+  }
 }

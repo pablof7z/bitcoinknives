@@ -38,3 +38,5 @@ yarn-debug.log*
 config/btcpay_certificate.pem
 spec/examples.txt
 
+
+/config/credentials/development.key

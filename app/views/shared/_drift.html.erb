@@ -1,3 +1,5 @@
+<%- if Rails.env.production? %>
+
 <script>
 "use strict";
 
@@ -23,5 +25,10 @@
 }();
 
 drift.SNIPPET_VERSION = '0.3.1';
+drift.config({
+  enableWelcomeMessage: false
+});
 drift.load('382p8m6ths2t');
 </script>
+
+<% end %>

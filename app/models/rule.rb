@@ -10,6 +10,7 @@ class Rule < ApplicationRecord
   validates :formula, inclusion: { in: RuleConfigService.formulas_human, message: 'is not valid' }
   validate :exchange_api_key_details, if: -> { exchange_api_key? && exchange_api_secret? }
   validate :max_sats_per_trade_limit, if: -> { exchange_name? }
+  validates :max_sats_per_trade_limit, numericality: true, if: -> { exchange_name? }
 
   default_scope -> { order(created_at: :desc) }
   scope :enabled, -> { where(enabled: true) }
@@ -33,7 +34,28 @@ class Rule < ApplicationRecord
     trades.successful.where('executed_at > ?', trade_execution_time_limit).empty?
   end
 
+  def max_sats_per_trade=(v)
+    super convert_number(v)
+  end
+
+  def max_sats_per_period=(v)
+    super convert_number(v)
+  end
+
   private
+
+  def convert_number(v)
+    multiplier = case
+    when v =~ /thousand/i, v =~ /k$/i then 1_000
+    when v =~ /million/i, v =~ /m$/i then 1_000_000
+    when v =~ /billion/i, v =~ /b$/i then 1_000_000_000
+    else
+      1
+    end
+
+    number = v.gsub(/[^0-9\.]/,'').to_f
+    number * multiplier
+  end
 
   def exchange_api_key_details
     if !RuleExchangeValidator.valid?(self)

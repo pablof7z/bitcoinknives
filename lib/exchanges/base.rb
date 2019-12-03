@@ -1,10 +1,9 @@
 module Exchanges
   class Base
-    attr_reader :api_key, :api_secret
+    attr_reader :api
 
-    def initialize(api_key: nil, api_secret: nil)
-      @api_key = api_key
-      @api_secret = api_secret
+    def initialize(api={})
+      @api = api
     end
 
     # Call a private method at the exchange to validate that the API key info is working

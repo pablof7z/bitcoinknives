@@ -1,9 +1,18 @@
 class RuleDecorator < Draper::Decorator
+  include ActionView::Helpers::NumberHelper
   delegate_all
 
   def card_class
     if !object.running?
     end
+  end
+
+  def max_sats_per_trade
+    number_to_human(object.max_sats_per_trade).downcase
+  end
+
+  def max_sats_per_period
+    number_to_human(object.max_sats_per_period).downcase
   end
 
   def price_change_class

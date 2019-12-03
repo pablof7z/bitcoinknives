@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_04_163507) do
+ActiveRecord::Schema.define(version: 2019_11_29_103637) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "bitcoin_price_changes", force: :cascade do |t|
     t.string "base_currency"
@@ -34,7 +37,7 @@ ActiveRecord::Schema.define(version: 2019_11_04_163507) do
   end
 
   create_table "invoices", force: :cascade do |t|
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.decimal "amount"
     t.string "currency", default: "BTC"
     t.string "status"
@@ -46,7 +49,7 @@ ActiveRecord::Schema.define(version: 2019_11_04_163507) do
   end
 
   create_table "rules", force: :cascade do |t|
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.float "change_percentage"
     t.string "change_period", default: "24 hours"
     t.string "formula"
@@ -61,12 +64,15 @@ ActiveRecord::Schema.define(version: 2019_11_04_163507) do
     t.string "slug"
     t.string "base_currency", default: "USD"
     t.string "max_sats_per_period_length", default: "1 week"
+    t.string "exchange_api_passphrase"
+    t.string "mayer_multiple"
+    t.decimal "mayer_multiple_value"
     t.index ["slug"], name: "index_rules_on_slug", unique: true
     t.index ["user_id"], name: "index_rules_on_user_id"
   end
 
   create_table "trades", force: :cascade do |t|
-    t.integer "rule_id", null: false
+    t.bigint "rule_id", null: false
     t.decimal "change_percentage"
     t.decimal "amount"
     t.decimal "price"
