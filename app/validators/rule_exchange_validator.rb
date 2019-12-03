@@ -14,6 +14,7 @@ class RuleExchangeValidator
         key: rule.exchange_api_key,
         secret: rule.exchange_api_secret,
         passphrase: rule.exchange_api_passphrase,
+      }
     )
     return client.valid_api_key?
   end
