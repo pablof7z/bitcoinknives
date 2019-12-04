@@ -6,6 +6,15 @@ GIT
       bitpay-key-utils (>= 2.2)
 
 GIT
+  remote: https://github.com/heelhook/coinbase-exchange-ruby.git
+  revision: be149dc3db7787b988e2f5021bc038465307fe14
+  specs:
+    coinbase-exchange (0.2.1)
+      bigdecimal
+      em-http-request
+      faye-websocket
+
+GIT
   remote: https://github.com/jonatack/kraken_ruby_client.git
   revision: 0f9990cbd4d093caf057d0eeb43ff3a60b98a1a9
   specs:
@@ -117,10 +126,6 @@ GEM
       timers (>= 4.1.1)
     childprocess (3.0.0)
     coderay (1.1.2)
-    coinbase-exchange (0.2.0)
-      bigdecimal
-      em-http-request
-      faye-websocket
     concurrent-ruby (1.1.5)
     cookiejar (0.3.3)
     crass (1.0.4)
@@ -378,7 +383,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   byebug
   capybara (>= 2.15)
-  coinbase-exchange
+  coinbase-exchange!
   devise
   draper
   eye

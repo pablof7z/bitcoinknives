@@ -28,6 +28,25 @@ module Exchanges
     end
 
     def create_buy_market_order(pair:, amount:)
+      order = @client.bid_market(
+        amount,
+        product_id: pair,
+      )
+
+      res.order_id = order['id']
+
+      # Yeah... refactor this to make it async
+      100.times do
+        order_status = @client.order(order['id'])
+        if order_status['status'] == 'done'
+          return translate_order_to_result(order_status)
+        end
+      end
+    rescue => e
+      TradeResult.new(
+        message: e.message,
+        status: TradeResult::STATUS::Failed
+      )
     end
 
     private
@@ -36,8 +55,14 @@ module Exchanges
       res = TradeResult.new
 
       res.order_id = order['id']
-      res.message = order['done_reason']
-      res.price = order['executed_value'].to_f / order['size'].to_f
+      res.message = order.to_s
+
+      begin
+        res.price = order_status['executed_value'].to_f / order_status['filled_size'].to_f
+      rescue => e
+        res.price = 0
+        Raven.capture_message("Error calculating cbp price: #{order_status.to_s}: #{e.message}", extra: {order_status: order_status})
+      end
 
       res.status = case order['status']
       when 'done' then TradeResult::STATUS::Success
@@ -53,5 +78,4 @@ module Exchanges
       asset
     end
   end
-
 end
