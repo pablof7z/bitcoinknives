@@ -10,7 +10,7 @@ class RuleExchangeValidator
     end
 
     client = k.new(
-      api: {
+      {
         key: rule.exchange_api_key,
         secret: rule.exchange_api_secret,
         passphrase: rule.exchange_api_passphrase,
