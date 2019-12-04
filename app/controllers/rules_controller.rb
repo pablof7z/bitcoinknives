@@ -95,6 +95,7 @@ class RulesController < ApplicationController
       :exchange_name,
       :exchange_api_key,
       :exchange_api_secret,
+      :exchange_api_passphrase,
     ]
 
     if current_user.has_paid_plan?
