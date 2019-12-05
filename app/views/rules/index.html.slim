@@ -36,11 +36,18 @@
                       a.button.is-primary[data-chat] Need help?
 
                 - if rule.trades.successful.count > 0
-                  p= "🙌🏻 #{number_to_human(rule.total_traded * 1e8)} sats stacked"
-                - if rule.enabled? && !rule.tradable? && rule.last_trade
-                  p
-                    | Stacked #{time_ago_in_words(rule.last_trade_time)} ago,
-                    |  waiting to stack again for #{time_ago_in_words(rule.next_trade_time)}
+                  p= "🙌🏻 #{number_to_human(rule.total_sats_traded)} sats stacked"
+                - if rule.enabled?
+                  - if RuleTraderPolicy.rule_traded_within_change_period?(rule.object)
+                    p
+                      | Stacked #{time_ago_in_words(rule.last_trade_time)} ago,
+                      |  waiting to stack again for #{time_ago_in_words(rule.next_trade_time)}
+                  - elsif !RuleTraderPolicy.rule_within_trade_limits?(rule.object)
+                    p
+                      | You've reached the stacking limit for this period, stacking #{rule.total_sats_traded_in_period} sats in the past #{rule.max_sats_per_period_length}
+                    p
+                      = link_to 'Want to increase your limit?', edit_rule_path(rule)
+
               .card-footer
                 = link_to 'Edit', edit_rule_path(rule), class: 'button is-inverted is-primary is-fullwidth is-large card-footer-item'
                 - if !rule.configured?

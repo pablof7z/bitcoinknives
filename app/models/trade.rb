@@ -6,6 +6,7 @@ class Trade < ApplicationRecord
            :formula,
            :base_currency,
            :slug,
+           :max_sats_per_trade,
            to: :rule, prefix: true
 
   delegate :base_currency,

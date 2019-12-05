@@ -7,6 +7,8 @@ FactoryBot.define do
     base_currency { 'USD' }
     formula {'1 btc'}
     enabled { true }
+    max_sats_per_trade { '1 btc' }
+    max_sats_per_period { '1 btc' }
 
     user
   end

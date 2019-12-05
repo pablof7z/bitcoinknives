@@ -29,9 +29,9 @@ class Rule < ApplicationRecord
   end
 
   def tradable?
-    return false unless configured?
-    trade_execution_time_limit = RuleConfigService.period_in_seconds(change_period).ago
-    trades.successful.where('executed_at > ?', trade_execution_time_limit).empty?
+    configured? &&
+    RuleTraderPolicy.rule_within_trade_limits?(self) &&
+    sats_available_for_trade_in_period > 0
   end
 
   def max_sats_per_trade=(v)
@@ -42,6 +42,19 @@ class Rule < ApplicationRecord
     super convert_number(v)
   end
 
+  def total_sats_traded_in_period
+    period_limit = RuleConfigService.period_in_seconds(max_sats_per_period_length)
+
+    trades
+      .successful
+      .where('created_at >= ?', period_limit.ago)
+      .inject(0) { |mem, trade| mem + trade.amount } * 1e8
+  end
+
+  def sats_available_for_trade_in_period
+    max_sats_per_period - total_sats_traded_in_period
+  end
+
   private
 
   def convert_number(v)
@@ -49,6 +62,7 @@ class Rule < ApplicationRecord
     when v =~ /thousand/i, v =~ /k$/i then 1_000
     when v =~ /million/i, v =~ /m$/i then 1_000_000
     when v =~ /billion/i, v =~ /b$/i then 1_000_000_000
+    when v =~ /btc$/i, v =~ /bitcoin$/i then 1e8
     else
       1
     end

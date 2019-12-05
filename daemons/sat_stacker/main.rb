@@ -1,5 +1,6 @@
 $:.unshift File.dirname(__FILE__)
 $:.unshift "#{File.dirname(__FILE__)}/lib"
+$:.unshift "#{Rails.root}/app/policies"
 
 require "rules_query"
 require "rule_trader_policy"
