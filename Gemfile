@@ -69,3 +69,4 @@ gem "sentry-raven"
 gem 'eye'
 gem 'coinbase-exchange', github: 'heelhook/coinbase-exchange-ruby'
 gem 'twitter'
+gem 'mailgun-ruby', '~>1.1.6'

@@ -17,6 +17,7 @@ class Trade < ApplicationRecord
            to: :rule, prefix: false
 
   delegate :id,
+           :email,
            to: :user, prefix: true
 
   default_scope -> { order(created_at: :desc) }

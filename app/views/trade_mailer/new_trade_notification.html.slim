@@ -1,0 +1,7 @@
+div[style='text-align: center;']
+  h1[style="zoom: 4"] ☣️
+  h1 Hoooray!
+
+  h3 You just took #{number_to_human(@trade.amount * 1e8).downcase} sats from crappy weak hands at a #{@trade.change_percentage.to_i.abs}% discount!
+
+  <a href="https://twitter.com/intent/tweet?status=#{URI::encode("I just took #{number_to_human(@trade.amount * 1e8).downcase} sats from your weak hands at a #{@trade.change_percentage.to_i.abs}% discount! #bitcoin")}" target='_blank'>Brag about it</a>

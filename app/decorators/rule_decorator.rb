@@ -28,8 +28,8 @@ class RuleDecorator < Draper::Decorator
     bpc.change_percentage.round(3) if bpc && bpc.change_percentage
   end
 
-  def last_sats_trade
-    object.trades.successful.order(created_at: :desc).first * 1e8
+  def last_trade
+    object.trades.successful.order(created_at: :desc).first
   end
 
   def last_trade_time
