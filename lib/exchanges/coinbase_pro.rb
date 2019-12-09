@@ -33,8 +33,6 @@ module Exchanges
         product_id: pair,
       )
 
-      res.order_id = order['id']
-
       # Yeah... refactor this to make it async
       100.times do
         order_status = @client.order(order['id'])
