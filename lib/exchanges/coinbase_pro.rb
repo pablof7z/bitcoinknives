@@ -56,10 +56,10 @@ module Exchanges
       res.message = order.to_s
 
       begin
-        res.price = order_status['executed_value'].to_f / order_status['filled_size'].to_f
+        res.price = order['executed_value'].to_f / order['filled_size'].to_f
       rescue => e
         res.price = 0
-        Raven.capture_message("Error calculating cbp price: #{order_status.to_s}: #{e.message}", extra: {order_status: order_status})
+        Raven.capture_message("Error calculating cbp price: #{order.to_s}: #{e.message}", extra: {order_status: order})
       end
 
       res.status = case order['status']
