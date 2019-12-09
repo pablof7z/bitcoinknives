@@ -8,9 +8,9 @@ module Exchanges
     def initialize(api={})
       super
       @client = Coinbase::Exchange::Client.new(
-        @api.exchange_api_key,
-        @api.exchange_api_secret,
-        @api.exchange_api_passphrase,
+        @api[:key],
+        @api[:secret],
+        @api[:passphrase],
       )
     end
 
