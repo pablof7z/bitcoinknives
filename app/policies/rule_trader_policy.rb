@@ -2,8 +2,8 @@ class RuleTraderPolicy
   class << self
     def should_execute_trade?(rule, bitcoin_price_change)
       sufficient_price_change?(rule, bitcoin_price_change) &&
-      rule_within_trade_limits?(rule, bitcoin_price_change) &&
-      !rule_traded_within_change_period?(rule, bitcoin_price_change)
+      rule_within_trade_limits?(rule) &&
+      !rule_traded_within_change_period?(rule)
     end
 
     def sufficient_price_change?(rule, bitcoin_price_change)
