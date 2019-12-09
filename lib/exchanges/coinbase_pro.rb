@@ -8,9 +8,9 @@ module Exchanges
     def initialize(api={})
       super
       @client = Coinbase::Exchange::Client.new(
-        @api[:key],
-        @api[:secret],
-        @api[:passphrase],
+        @api.exchange_api_key,
+        @api.exchange_api_secret,
+        @api.exchange_api_passphrase,
       )
     end
 
@@ -43,10 +43,10 @@ module Exchanges
         end
       end
     rescue => e
-      TradeResult.new(
-        message: e.message,
-        status: TradeResult::STATUS::Failed
-      )
+      tr = TradeResult.new
+      tr.message = e.message
+      tr.status = TradeResult::STATUS::Failed
+      tr
     end
 
     private
