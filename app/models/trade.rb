@@ -13,7 +13,7 @@ class Trade < ApplicationRecord
            :exchange_name,
            :exchange_api_key,
            :exchange_api_secret,
-           :exchange_api_passhphrase,
+           :exchange_api_passphrase,
            to: :rule, prefix: false
 
   delegate :id,

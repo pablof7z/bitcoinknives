@@ -34,6 +34,8 @@ class TradeExecuter
       tx_status: resp.status,
       price: resp.price,
     )
+
+    TradesChannel.broadcast_to(@trade.user_id, rule_id: @trade.rule_slug, trade_id: @trade.id)
   rescue => e
     @trade.update(
       tx_info: e.message,
@@ -42,6 +44,5 @@ class TradeExecuter
   ensure
     @trade.update(executed_at: Time.now)
 
-    TradesChannel.broadcast_to(@trade.user_id, rule_id: @trade.rule_slug, trade_id: @trade.id)
   end
 end
