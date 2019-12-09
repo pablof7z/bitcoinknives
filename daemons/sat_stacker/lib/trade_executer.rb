@@ -37,12 +37,14 @@ class TradeExecuter
 
     TradesChannel.broadcast_to(@trade.user_id, rule_id: @trade.rule_slug, trade_id: @trade.id)
   rescue => e
+    Raven.capture_message(e.message, extra: {backtrace: e.backtrace})
+    Rails.logger.error e.message
+    Rails.logger.error e.backtrace
     @trade.update(
       tx_info: e.message,
       tx_status: TradeResult::STATUS::Failed,
     )
   ensure
     @trade.update(executed_at: Time.now)
-
   end
 end
