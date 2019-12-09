@@ -33,6 +33,10 @@ module Exchanges
         product_id: pair,
       )
 
+      if !order || !order['id']
+        raise "Coinbase replied with an unexpected message '#{order.inspect}'"
+      end
+
       # Yeah... refactor this to make it async
       100.times do
         order_status = @client.order(order['id'])
