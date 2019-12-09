@@ -17,7 +17,7 @@ class TradeExecuter
 
     raise "Would have traded #{trade.amount}" if trade.amount > 0.01
 
-    te = k.new(
+    te = klass.new(
       key: trade.exchange_api_key,
       secret: trade.exchange_api_secret,
       passphrase: trade.exchange_api_passphrase,
