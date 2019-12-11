@@ -30,7 +30,7 @@ module Exchanges
     def create_buy_market_order(pair:, amount:)
       order = @client.bid_market(
         amount,
-        product_id: pair,
+        product_id: get_pair(pair),
       )
 
       if !order || !order['id']
