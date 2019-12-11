@@ -62,9 +62,9 @@ class RulesController < ApplicationController
   # DELETE /rules/1
   # DELETE /rules/1.json
   def destroy
-    @rule.destroy
+    @rule.update(enabled: !@rule.enabled?)
     respond_to do |format|
-      format.html { redirect_to rules_url, notice: 'Rule was successfully destroyed.' }
+      format.html { redirect_to rules_url }
       format.json { head :no_content }
     end
   end

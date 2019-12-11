@@ -26,7 +26,13 @@
                   code #{rule.formula}
                   |  with #{rule.base_currency}
 
-                - unless rule.configured?
+                - if !rule.enabled?
+                  .columns.is-mobile.is-vcentered
+                    .column.is-1
+                      h1.title 😴
+                    .column.is-6[style='padding-left: 2rem;']
+                      p This rule is currently disabled.
+                - elsif !rule.configured?
                   .columns.is-mobile.is-vcentered
                     .column.is-1
                       h1.title 😔

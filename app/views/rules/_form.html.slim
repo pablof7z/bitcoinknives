@@ -200,6 +200,14 @@
                   ' You can enable IP whitelist with:
                   b 157.245.32.159
       .actions.has-text-centered
-        .columns
-          .column.is-4.is-offset-3
+        .level
+          .level-item
             = form.submit 'Save', class: 'button is-large is-primary is-fullwidth'
+          .level-item
+          .level-item
+            .has-text-right
+              - unless @rule.new_record?
+                - if @rule.enabled?
+                  = button_to 'Disable', rule_path(@rule), method: :delete, class: 'button is-large is-danger'
+                - else
+                  = button_to 'Enable', rule_path(@rule), method: :delete, class: 'button is-large is-warning'
