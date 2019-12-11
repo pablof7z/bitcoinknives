@@ -1,8 +1,8 @@
 section.hero.is-fullheight.is-vcentered
   .hero-body
     .container
-      .level
-        .level-item
+      .columns
+        .column.is-4.is-offset-4
           .box
             = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
               .field

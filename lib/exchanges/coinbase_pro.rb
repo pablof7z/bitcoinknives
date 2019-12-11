@@ -45,31 +45,32 @@ module Exchanges
         end
       end
     rescue => e
-      tr = TradeResult.new
-      tr.message = e.message
-      tr.status = TradeResult::STATUS::Failed
-      tr
+      Log.exception(e)
+      TradeResult.new(
+        message: e.message,
+        status: TradeResult::STATUS::Failed
+      )
     end
 
     private
 
     def translate_order_to_result(order)
-      res = TradeResult.new
-
-      res.order_id = order['id']
-      res.message = order.to_s
+      res = TradeResult.new(
+        order_id: order['id'],
+        message: order.to_s
+      )
 
       begin
         res.price = order['executed_value'].to_f / order['filled_size'].to_f
       rescue => e
         res.price = 0
-        Raven.capture_message("Error calculating cbp price: #{order.to_s}: #{e.message}", extra: {order_status: order})
+        Log.create(message: "Error calculating cbp price: #{order.to_s}: #{e.message}")
       end
 
       res.status = case order['status']
       when 'done' then TradeResult::STATUS::Success
       else
-        Raven.capture_message("Unhandled cbpro status: #{order['status']}", extra: {order: order})
+        Log.create(message: "Unhandled cbpro status: #{order['status']}", extra: {order: order})
         TradeResult::STATUS::Failed
       end
 

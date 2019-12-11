@@ -22,4 +22,8 @@ class Trade < ApplicationRecord
 
   default_scope -> { order(created_at: :desc) }
   scope :successful, -> { where(tx_status: TradeResult::STATUS::Success) }
+
+  def successful?
+    tx_status == TradeResult::STATUS::Success
+  end
 end
