@@ -34,8 +34,7 @@
       .container.narrow
         h2.subtitle.is-3[style='margin-bottom: 0.5rem;']
           ' Mayer Multiple
-          - if !current_user.has_paid_plan?
-            span.tag.is-success Premium
+          span.tag.is-success Premium
         .columns
           .column.is-6
             .has-text-grey
@@ -77,8 +76,7 @@
       .container.narrow
         h2.subtitle.is-3[style='margin-bottom: 0.5rem;']
           ' Limits
-          - if !current_user.has_paid_plan?
-            span.tag.is-success Premium
+          span.tag.is-success Premium
         p.has-text-grey Set limits so Bitcoin Knives doesn't just take <b>all</b> sats out of circulation!
         .box
           .columns
@@ -145,7 +143,7 @@
                   label.label Exchange
                 .column.is-4
                   .control
-                    .select.is-medium
+                    .select
                       = form.select :exchange_name, (@exchanges+['Not listed']), {include_blank: true}, { "data-target" => "rule-exchange.exchange", "data-action" => "change->rule-exchange#display_correct_fields" }
               #fields.columns.hidden.kraken.coinbase_pro
                 .column.is-8
