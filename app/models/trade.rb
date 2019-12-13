@@ -14,6 +14,7 @@ class Trade < ApplicationRecord
            :exchange_api_key,
            :exchange_api_secret,
            :exchange_api_passphrase,
+           :trade_notification,
            to: :rule, prefix: false
 
   delegate :id,

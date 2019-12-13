@@ -78,7 +78,7 @@ class RulesController < ApplicationController
   def load_rule_configs
     @formulas = RuleConfigService.formulas_human
     @exchanges = RuleConfigService.exchanges
-    @periods = RuleConfigService.periods
+    @periods = RuleConfigService.periods.map{|p| ["per #{p}", p]}
   end
 
   def load_last_mm_tweet
@@ -96,6 +96,7 @@ class RulesController < ApplicationController
       :exchange_api_key,
       :exchange_api_secret,
       :exchange_api_passphrase,
+      :trade_notification,
     ]
 
     if current_user.has_paid_plan?

@@ -32,10 +32,6 @@ class TradeExecuter
       tx_status: resp.status,
       price: resp.price,
     )
-
-    if @trade.successful?
-      TradesChannel.broadcast_to(@trade.user_id, rule_id: @trade.rule_slug, trade_id: @trade.id)
-    end
   rescue => e
     Raven.capture_message(e.message, extra: {backtrace: e.backtrace})
     Log.exception(e)

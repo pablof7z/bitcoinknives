@@ -22,6 +22,11 @@ class RuleTraderService
 
     te = TradeExecuter.new(trade)
     te.execute!
+
+    if @trade.successful?
+      TradesChannel.broadcast_to(@trade.user_id, rule_id: @trade.rule_slug, trade_id: @trade.id)
+      TradeMailer.new_trade_notification(@trade).deliver_later if @trade.trade_notification
+    end
   rescue => e
     Raven.capture_message("Failed trade execution: #{rule.id}", extra: {error: e.message, backtrace: e.backtrace})
     raise

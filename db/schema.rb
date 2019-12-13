@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_29_103637) do
+ActiveRecord::Schema.define(version: 2019_12_13_124603) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,6 +48,14 @@ ActiveRecord::Schema.define(version: 2019_11_29_103637) do
     t.index ["user_id"], name: "index_invoices_on_user_id"
   end
 
+  create_table "logs", force: :cascade do |t|
+    t.string "message"
+    t.string "backtrace"
+    t.string "severity"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "rules", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.float "change_percentage"
@@ -67,6 +75,7 @@ ActiveRecord::Schema.define(version: 2019_11_29_103637) do
     t.string "exchange_api_passphrase"
     t.string "mayer_multiple"
     t.decimal "mayer_multiple_value"
+    t.boolean "trade_notification", default: true
     t.index ["slug"], name: "index_rules_on_slug", unique: true
     t.index ["user_id"], name: "index_rules_on_user_id"
   end

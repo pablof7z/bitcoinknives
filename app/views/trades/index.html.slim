@@ -22,7 +22,7 @@ section.section
               '
               = "(#{trade.amount} btc)"
 
-            td= number_to_currency(trade.price, unit: 'USD')
+            td= number_to_currency(trade.price, unit: trade.base_currency)
             td[class=trade.tx_status]= trade.tx_status
           tr
             td[colspan='5']

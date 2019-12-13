@@ -56,7 +56,7 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'slim'
 gem 'devise'
-gem 'pry'
+gem 'pry-rails'
 gem 'friendly_id'
 gem 'draper'
 gem 'rest-client'
@@ -68,5 +68,5 @@ gem 'bitpay-client', github: 'bitpay/ruby-client'
 gem "sentry-raven"
 gem 'eye'
 gem 'coinbase-exchange', github: 'heelhook/coinbase-exchange-ruby'
-gem 'twitter'
+gem 'twitter', github: 'heelhook/twitter'
 gem 'mailgun-ruby', '~>1.1.6'

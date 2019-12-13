@@ -1,213 +1,251 @@
 = form_for @rule do |form|
-  - if rule.errors.any?
+  div[data-controller='rule-limits']
+    - if rule.errors.any?
+      section.section
+        .container.narrow.is-centered
+          - rule.errors.full_messages.each do |message|
+            p.notification[class="is-danger"]
+              button.delete
+              = message
+
+    section.hero.is-vcentered.is-light.is-primary.is-bold.is-medium
+      .hero-body
+        .container.narrow.has-text-centered
+          div
+            .content.is-large[style='line-height: 3rem;']
+              ' When bitcoin falls by
+              .control.is-inline
+                .select.is-medium
+                  = form.select :change_percentage, options_for_select((1..50).map{|i| ["#{i}%", i.to_f]}), class: 'input is-inline has-text-right'
+              '  or more over
+              .control.is-inline
+                .select.is-medium
+                  = form.select :change_period, @periods
+            .content.is-large[style='line-height: 3rem;']
+              '  buy
+              .control.is-inline
+                .select.is-medium
+                  = form.select :formula, @formulas
+              '  with
+              .field.is-inline
+                = form.text_field :base_currency, placeholder: 'USD', class: 'input is-medium is-inline', style: 'max-width: 5rem'
+
     section.section
-      .container.narrow.is-centered
-        - rule.errors.full_messages.each do |message|
-          p.notification[class="is-danger"]
-            button.delete
-            = message
-
-  section.hero.is-vcentered.is-light.is-primary.is-bold.is-medium
-    .hero-body
-      .container.narrow.has-text-centered
-        div
-          .content.is-large[style='line-height: 3rem;']
-            ' When bitcoin falls by
-            .control.is-inline
-              .select.is-medium
-                = form.select :change_percentage, options_for_select((1..50).map{|i| ["#{i}%", i.to_f]}), class: 'input is-inline has-text-right'
-            '  or more over
-            .control.is-inline
-              .select.is-medium
-                = form.select :change_period, @periods
-          .content.is-large[style='line-height: 3rem;']
-            '  buy
-            .control.is-inline
-              .select.is-medium
-                = form.select :formula, @formulas
-            '  with
-            .field.is-inline
-              = form.text_field :base_currency, placeholder: 'USD', class: 'input is-medium is-inline', style: 'max-width: 5rem'
-
-  section.section
-    .container.narrow
-      .columns[data-controller='rule-limits']
-        .column.is-7
-          h2.subtitle.is-3[style='margin-bottom: 0.5rem;'] Mayer Multiple
-          .box.content.is-medium
-            .content.is-large
+      .container.narrow
+        h2.subtitle.is-3[style='margin-bottom: 0.5rem;']
+          ' Mayer Multiple
+          - if !current_user.has_paid_plan?
+            span.tag.is-success Premium
+        .columns
+          .column.is-6
+            .has-text-grey
+              p This setting allows you to take into account the price of bitcoin in a historical context.
               p
-                | This setting allows you to take into account the price of bitcoin in a historical context.
+                | You can read more about the Mayer Multiple <a href="http://mayermultiple.com" target='_blank'>here</a>.
+              p
+                a.button.is-small.is-primary[data-chat] Need help with this?
+          .column.is-6
+            .content
+              = @last_mm_tweet_id
 
-            div[style='margin-bottom: 1rem;']
-              label.radio[style='line-height: 2.5rem;']
-                = form.radio_button :mayer_multiple, nil, style: 'margin-right: 0.25rem;'
-                |  Ignore the Mayer Multiple
+        .box[data-action=(!current_user.has_paid_plan? ? 'click->rule-limits#show_modal' : '')]
+          .columns
+            .column
+              = form.radio_button :mayer_multiple, nil, class: 'is-checkradio'
+              = form.label :mayer_multiple, 'Ignore the Mayer Multiple', class: 'label'
 
-            div[style='margin-bottom: 1rem;']
-              label.radio[style='line-height: 2.5rem;']
-                = form.radio_button :mayer_multiple, 'unit', style: 'margin-right: 0.25rem;'
-                span>  Only buy when the Mayer Multiple is lower than
-                .control.is-inline
-                  .select.is-medium
-                    = select_tag :change_percentage, options_for_select((1..300).map{|i| i=i/100.0; ["#{i}", i]}, 2.4), class: 'input is-inline'
+          .columns
+            .column.is-8
+              = form.radio_button :mayer_multiple, 'unit', class: 'is-checkradio'
+              = form.label :mayer_multiple_unit, 'Only buy when the Mayer Multiple is lower than', class: 'label'
+              p.has-text-grey A number lower than 2.4 is more conservative
+            .column.is-4.has-text-right
+              .control.is-inline
+                .select
+                  = select_tag :change_percentage, options_for_select((1..300).map{|i| i=i/100.0; ["#{i}", i]}, 2.4), disabled: !current_user.has_paid_plan?
 
-            div[style='margin-bottom: 1rem;']
-              label.radio[style='line-height: 2.5rem;']
-                = form.radio_button :mayer_multiple, 'percentage', style: 'margin-right: 0.25rem;'
-                '  Only buy when the Mayer Multiple has historically been higher
-                .control.is-inline
-                  .select.is-medium
-                    = select_tag :change_percentage, options_for_select((1..99).map{|i| ["#{i}%", i.to_f]}, 50.0), class: 'input is-inline'
-                |  of the time
+          .columns
+            .column.is-8
+              = form.radio_button :mayer_multiple, 'percentage', class: 'is-checkradio'
+              = form.label :mayer_multiple_percentage, 'Only buy when the Mayer Multiple has historically been higher', class: 'label'
+            .column.is-4.has-text-right
+              .control.is-inline
+                .select
+                  = select_tag :change_percentage, options_for_select((1..99).map{|i| ["#{i}% of the time", i.to_f]}, 50.0), disabled: !current_user.has_paid_plan?
 
-        .column.is-5
-          <blockquote class="twitter-tweet" data-link-color="#6c63ff"><p lang="en" dir="ltr">Dec 01, 2019: The current Mayer Multiple is 0.78 with a <a href="https://twitter.com/search?q=%24BTC&amp;src=ctag&amp;ref_src=twsrc%5Etfw">$BTC</a> price of <a href="https://twitter.com/search?q=%24USD&amp;src=ctag&amp;ref_src=twsrc%5Etfw">$USD</a> 7,303.23 and a 200 day moving average of $9,423.10 USD. The <a href="https://twitter.com/TIPMayerMultple?ref_src=twsrc%5Etfw">@TIPMayerMultple</a> has historically been higher 84.18% of the time with an average of 1.47. Learn more at: <a href="https://t.co/9n0xlTWuNP">https://t.co/9n0xlTWuNP</a></p>&mdash; Mayer Multiple (@TIPMayerMultple) <a href="https://twitter.com/TIPMayerMultple/status/#{@last_mm_tweet_id}?ref_src=twsrc%5Etfw">December 1, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    section.section
+      .container.narrow
+        h2.subtitle.is-3[style='margin-bottom: 0.5rem;']
+          ' Limits
+          - if !current_user.has_paid_plan?
+            span.tag.is-success Premium
+        p.has-text-grey Set limits so Bitcoin Knives doesn't just take <b>all</b> sats out of circulation!
+        .box
+          .columns
+            .column.is-8
+              label.label[style='margin-bottom: 0;'] Per-trade limit
+              p.has-text-grey Limit the number of sats to buy on a single trade
+            .column.is-4[data-controller='sats-input']
+              - if current_user.has_paid_plan?
+                .control.has-icons-right
+                  = form.text_field :max_sats_per_trade, class: 'input', 'data-target' => 'sats-input.input', 'data-action' => 'keyup->sats-input#update', autocomplete: 'off'
+                  span.icon.is-right.has-text-grey[style='padding-right: 0.5rem;']
+                    | sats
+              - else
+                .control.has-icons-right[data-action='click->rule-limits#show_modal']
+                  = form.text_field :max_sats_per_trade, class: 'input', disabled: true, 'data-target' => 'sats-input.input', 'data-action' => 'keyup->sats-input#update', autocomplete: 'off'
+                  span.icon.is-right.has-text-grey[style='padding-right: 0.5rem;']
+                    | sats
+              span.has-text-grey.content.is-small[data-target='sats-input.value']
 
-  section.section
-    .container.narrow
-      .columns[data-controller='rule-limits']
-        .column
-          h2.subtitle.is-3[style='margin-bottom: 0.5rem;'] Limits
-          .box.content.is-medium[style='line-height: 4rem;']
-            .field.is-horizontal
-              .field-label
-                label.label[style='white-space: nowrap;'] Don't buy more than
-              .field-body
+          .columns
+            .column.is-8
+              label.label[style='margin-bottom: 0;'] Per-period limit
+              p.has-text-grey Limit the number of sats to buy on a given period
+            .column.is-4[data-controller='sats-input']
+              .field.has-addons
                 - if current_user.has_paid_plan?
-                  .control
-                    = form.text_field :max_sats_per_trade, class: 'input is-inline is-large', style: 'max-width: 12rem;'
+                  .control.has-icons-right
+                    = form.text_field :max_sats_per_period, class: 'input', 'data-target' => 'sats-input.input', 'data-action' => 'keyup->sats-input#update', autocomplete: 'off'
+                    span.icon.is-right.has-text-grey[style='padding-right: 0.5rem;']
+                      | sats
                 - else
                   .control.has-icons-left[data-action='click->rule-limits#show_modal']
-                    = form.text_field :max_sats_per_trade, class: 'input is-inline is-large', style: 'max-width: 12rem;', disabled: true
+                    = form.text_field :max_sats_per_period, class: 'input', style: 'max-width: 12rem;', disabled: true, 'data-target' => 'sats-input.input', 'data-action' => 'keyup->sats-input#update', autocomplete: 'off'
                     span.icon.is-small.is-left
                       i.fas.fa-lock
-                span[style='margin-left: 0.5rem;'] sats per trade
-
-            .field.is-horizontal
-              .field-label
-                label.label[style='white-space: nowrap;'] Don't buy more than
-              .field-body
-                - if current_user.has_paid_plan?
-                  .control
-                    = form.text_field :max_sats_per_period, class: 'input is-inline is-large', style: 'max-width: 12rem;'
-                - else
-                  .control.has-icons-left[data-action='click->rule-limits#show_modal']
-                    = form.text_field :max_sats_per_period, class: 'input is-inline is-large', style: 'max-width: 12rem;', disabled: true
-                    span.icon.is-small.is-left
-                      i.fas.fa-lock
-                span[style='margin-left: 0.5rem;'] sats per
                 .control.is-inline[style='margin-left: 0.5rem;']
-                  .select.is-large
+                  .select
                     - if current_user.has_paid_plan?
                       = form.select :max_sats_per_period_length, @periods, {}
                     - else
                       = form.select :max_sats_per_period_length, @periods, {}, "data-action" => 'change->rule-limits#show_modal', disabled: true
+              span.has-text-grey.content.is-small[data-target='sats-input.value']
 
-            - unless current_user.has_paid_plan?
-              .columns.is-vcentered[style='margin-top: 1.5rem;']
-                .column.is-3
-                  = image_tag 'undraw_chore_list_iof3.svg'
-                .column
-                  p.content.is-large
-                    | Want to stack more sats and get preferred execution?
-                  p
-                    a.button.is-dark.is-large[href='#' data-modal='upgrade-modal']
-                      span ⚡️ Upgrade ⚡️
+          - unless current_user.has_paid_plan?
+            .columns.is-vcentered[style='margin-top: 1.5rem;']
+              .column.is-3
+                = image_tag 'undraw_chore_list_iof3.svg'
+              .column
+                p.content.is-large
+                  | Want to stack more sats and get preferred execution?
+                p
+                  a.button.is-dark.is-large[href='#' data-modal='upgrade-modal']
+                    span ⚡️ Upgrade ⚡️
 
 
-  section.section
-    .container.narrow
-      h2.subtitle.is-3[style='margin-bottom: 0.5rem;'] Exchange
-      .columns.is-vcentered[data-controller='rule-exchange']
-        .column
-          .box
-            .field
-              = form.label 'Exchange', class: 'label'
-              .control
-                .select.is-medium
-                  = form.select :exchange_name, (@exchanges+['Not listed']), {include_blank: true}, { "data-target" => "rule-exchange.exchange", "data-action" => "change->rule-exchange#display_correct_fields" }
-            #fields.columns
-              .column.hidden.kraken.coinbase_pro
-                .field
+    section.section
+      .container.narrow
+        h2.subtitle.is-3[style='margin-bottom: 0.5rem;'] Exchange
+        .columns.is-vcentered[data-controller='rule-exchange']
+          .column
+            .box
+              .columns
+                .column.is-8
+                  label.label Exchange
+                .column.is-4
+                  .control
+                    .select.is-medium
+                      = form.select :exchange_name, (@exchanges+['Not listed']), {include_blank: true}, { "data-target" => "rule-exchange.exchange", "data-action" => "change->rule-exchange#display_correct_fields" }
+              #fields.columns.hidden.kraken.coinbase_pro
+                .column.is-8
                   = form.label :exchange_api_key, 'API Key', class: 'label'
-                  = form.text_field :exchange_api_key, class: 'input is-medium'
-              .column.hidden.kraken.coinbase_pro
-                .field
+                .column.is-4
+                  .control
+                    = form.text_field :exchange_api_key, class: 'input', autocomplete: 'off'
+              #fields.columns.hidden.kraken.coinbase_pro
+                .column.is-8
                   = form.label :exchange_api_secret, 'API Secret', class: 'label'
-                  = form.text_field :exchange_api_secret, class: 'input is-medium'
-              .column.hidden.coinbase_pro
-                .field
+                .column.is-4
+                  .control
+                    = form.text_field :exchange_api_secret, class: 'input', autocomplete: 'off'
+              #fields.columns.hidden.coinbase_pro
+                .column.is-8
                   = form.label :exchange_api_passphrase, 'API Passphrase', class: 'label'
-                  = form.text_field :exchange_api_passphrase, class: 'input is-medium'
-        .column.is-4
-          .content
-            #instructions
-              .hidden.not_listed
-                h2
-                  | Can't find your exchange?
+                .column.is-4
+                  .control
+                    = form.text_field :exchange_api_passphrase, class: 'input', autocomplete: 'off'
+          .column.is-4
+            .content
+              #instructions
+                .hidden.not_listed
+                  h3.
+                    | Can't find your exchange?
 
-                p
-                  ' Send us a quick
-                  a[href='https://twitter.com/pablof7z' target='_blank'] DM
-                  '  or
-                  a[data-chat] message
-                  |  about it and we'll get it added as soon as possible.
-              .hidden.coinbase_pro
-                p
-                  ' Create an API key at
-                  a[href='https://pro.coinbase.com/profile/api' target='_blank' style='font-size: 0.8rem;'] https://pro.coinbase.com/profile/api
-                p
-                  | Make sure you enable the permissions:
+                  p
+                    ' Send us a quick
+                    a[href='https://twitter.com/pablof7z' target='_blank'] DM
+                    '  or
+                    a[data-chat] message
+                    |  about it and we'll get it added as soon as possible.
+                .hidden.coinbase_pro
+                  p
+                    ' Create an API key at
+                    a[href='https://pro.coinbase.com/profile/api' target='_blank' style='font-size: 0.8rem;'] https://pro.coinbase.com/profile/api
+                  p
+                    | Make sure you enable the permissions:
 
-                p
-                  b ✅ Trade
-                  br
-                  span[style='font-size: 0.8rem;']  In order to create orders.
+                  p
+                    b ✅ Trade
+                    br
+                    span[style='font-size: 0.8rem;']  In order to create orders.
 
-                p
-                  ' You can enable IP whitelist with:
-                  b 165.22.78.113
-              .hidden.kraken
-                p
-                  ' Create an API key at
-                  a[href='https://www.kraken.com/u/settings/api' target='_blank' style='font-size: 0.8rem;'] https://www.kraken.com/u/settings/api
-                p
-                  | Make sure you enable the permissions:
+                  p
+                    ' You can enable IP whitelist with:
+                    b 157.245.32.159
+                .hidden.kraken
+                  p
+                    ' Create an API key at
+                    a[href='https://www.kraken.com/u/settings/api' target='_blank' style='font-size: 0.8rem;'] https://www.kraken.com/u/settings/api
+                  p
+                    | Make sure you enable the permissions:
 
-                p
-                  b ✅ Query Open Orders & Trades
-                  br
-                  span[style='font-size: 0.8rem;']  In order to create orders.
+                  p
+                    b ✅ Query Open Orders & Trades
+                    br
+                    span[style='font-size: 0.8rem;']  In order to create orders.
 
-                p
-                  b ✅ Query Closed Orders & Trades
-                  br
-                  span[style='font-size: 0.8rem;']  In order to check when orders have executed.
-              .hidden.cex
-                p
-                  ' Create an API key at
-                  a[href='https://cex.io/trade/profile#/api' target='_blank' style='font-size: 0.8rem;'] https://cex.io/trade/profile#/api
-                p
-                  | Make sure you enable the permissions:
+                  p
+                    b ✅ Query Closed Orders & Trades
+                    br
+                    span[style='font-size: 0.8rem;']  In order to check when orders have executed.
+                .hidden.cex
+                  p
+                    ' Create an API key at
+                    a[href='https://cex.io/trade/profile#/api' target='_blank' style='font-size: 0.8rem;'] https://cex.io/trade/profile#/api
+                  p
+                    | Make sure you enable the permissions:
 
-                p
-                  b ✅ Place orders
-                  br
-                  span[style='font-size: 0.8rem;']  In order to create orders.
+                  p
+                    b ✅ Place orders
+                    br
+                    span[style='font-size: 0.8rem;']  In order to create orders.
 
-                p
-                  ' You can enable IP whitelist with:
-                  b 157.245.32.159
-      .actions.has-text-centered
-        .level
-          .level-item
-            = form.submit 'Save', class: 'button is-large is-primary is-fullwidth'
-          .level-item
-          .level-item
-            .has-text-right
-              - unless @rule.new_record?
-                - if @rule.enabled?
-                  = button_to 'Disable', rule_path(@rule), method: :delete, class: 'button is-large is-danger'
-                - else
-                  = button_to 'Enable', rule_path(@rule), method: :delete, class: 'button is-large is-warning'
+                  p
+                    ' You can enable IP whitelist with:
+                    b 157.245.32.159
+
+    section.section
+      .container.narrow
+        h2.subtitle.is-3[style='margin-bottom: 0.5rem;']
+          | Settings
+        .box
+          .columns
+            .column.is-8
+              label.label[for="rule_enabled"] Allow this rule to run
+              p.has-text-grey This switch allows you to temporarily pause this rule.
+            .column.is-4.has-text-right
+              .field
+                = form.check_box :enabled, class: 'switch is-success is-rounded', type: 'checkbox'
+                label[for="rule_enabled"]
+          .columns
+            .column.is-8
+              label.label[for="rule_trade_notification"] Send trade notifications
+              p.has-text-grey Receive email notifications when a trade was executed
+            .column.is-4.has-text-right
+              .field
+                = form.check_box :trade_notification, class: 'switch is-success is-rounded', type: 'checkbox'
+                label[for="rule_trade_notification"]
+
+        .actions
+          = form.submit 'Save', class: 'button is-large is-primary'

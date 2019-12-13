@@ -16,9 +16,15 @@
 $primary: #6c63ff
 
 @import 'bulma/bulma'
+@import 'bulma-checkradio/dist/css/bulma-checkradio'
+@import 'bulma-ribbon/dist/css/bulma-ribbon'
+@import 'bulma-switch/dist/css/bulma-switch'
+
+@import url(https://fonts.googleapis.com/css?family=Nunito:300,400,600,700)
+@charset "UTF-8"
 
 body
-  font-family: 'PT Sans', sans-serif
+  font-family: "Nunito", sans-serif
   min-height: 100vh
 
 .container
@@ -75,7 +81,7 @@ h2.subtitle
   display: inline
 
 .hidden
-  display: none
+  display: none !important
 
 .notification.is-notice
   @extend .notification.is-success

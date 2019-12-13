@@ -22,12 +22,12 @@ export default class extends Controller {
     let exchange = this.exchangeTarget.value.toLowerCase();
     exchange = exchange.replace(' ', '_');
 
-    (document.querySelectorAll('#fields > *, #instructions > *') || []).forEach(($el) => {
+    (document.querySelectorAll('#fields, #instructions > *') || []).forEach(($el) => {
       if (!$el.classList.contains(exchange)) { $el.classList.add('hidden') };
     });
 
     if (exchange != '') {
-      (document.querySelectorAll('#fields > .'+exchange+', #instructions > .'+exchange) || []).forEach(($el) => {
+      (document.querySelectorAll('#fields.'+exchange+', #instructions > .'+exchange) || []).forEach(($el) => {
         if ($el.classList.contains(exchange)) { $el.classList.remove('hidden') };
       });
     }

@@ -8,7 +8,6 @@ class User < ApplicationRecord
   has_many :invoices
 
   def has_paid_plan?
-    return true
     upgraded?
   end
 end
