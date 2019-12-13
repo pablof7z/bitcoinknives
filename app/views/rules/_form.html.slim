@@ -146,21 +146,21 @@
                     .select
                       = form.select :exchange_name, (@exchanges+['Not listed']), {include_blank: true}, { "data-target" => "rule-exchange.exchange", "data-action" => "change->rule-exchange#display_correct_fields" }
               #fields.columns.hidden.kraken.coinbase_pro
-                .column.is-8
-                  = form.label :exchange_api_key, 'API Key', class: 'label'
                 .column.is-4
+                  = form.label :exchange_api_key, 'API Key', class: 'label'
+                .column.is-8
                   .control
                     = form.text_field :exchange_api_key, class: 'input', autocomplete: 'off'
               #fields.columns.hidden.kraken.coinbase_pro
-                .column.is-8
-                  = form.label :exchange_api_secret, 'API Secret', class: 'label'
                 .column.is-4
+                  = form.label :exchange_api_secret, 'API Secret', class: 'label'
+                .column.is-8
                   .control
                     = form.text_field :exchange_api_secret, class: 'input', autocomplete: 'off'
               #fields.columns.hidden.coinbase_pro
-                .column.is-8
-                  = form.label :exchange_api_passphrase, 'API Passphrase', class: 'label'
                 .column.is-4
+                  = form.label :exchange_api_passphrase, 'API Passphrase', class: 'label'
+                .column.is-8
                   .control
                     = form.text_field :exchange_api_passphrase, class: 'input', autocomplete: 'off'
           .column.is-4
