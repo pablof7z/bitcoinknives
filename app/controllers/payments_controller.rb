@@ -1,4 +1,6 @@
 class PaymentsController < ApplicationController
+  before_action :authenticate_user!
+
   def new
     @invoice = Invoice.create!(
       user: current_user,
