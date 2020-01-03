@@ -11,6 +11,7 @@ class TradeAmountCalculatorService
       rule.max_sats_per_trade,
       rule.sats_available_for_trade_in_period,
     ].min)
+      .round(5)
   end
 
   def self.sats_in_btc(sats)

@@ -5,6 +5,13 @@ describe "TradeAmountCalculatorService" do
   let(:bpc) { create(:bitcoin_price_change) }
 
   describe "calculate" do
+    it "doesn't specify a precision that's too high" do
+      trade.rule.formula = 'the same percentage x 100,000 sats'
+      bpc.change_percentage = 0.10264699265974021645851212e1
+      calc_amount = TradeAmountCalculatorService.calculate(trade.rule, bpc.change_percentage)
+      expect(calc_amount - calc_amount.round(6)).to eq(0)
+    end
+
     it 'converts relative formulas' do
       trade.rule.formula = 'the same percentage x 100,000 sats'
       expect(bpc.change_percentage).to eq(-50)
